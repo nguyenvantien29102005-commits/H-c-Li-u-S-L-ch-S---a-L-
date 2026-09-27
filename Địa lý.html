@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô Phỏng Địa Chất Học</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f4f7f6;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            width: 300px;
+            padding: 30px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            border: 1px solid #eef2f3;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Hiệu ứng zoom và đổ bóng khi di chuột qua */
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Màu sắc đặc trưng cho từng chủ đề để dễ phân biệt */
+        .card.noi-sinh:hover {
+            border-top: 5px solid #e74c3c; /* Màu đỏ của magma/nhiệt độ */
+        }
+
+        .card.ngoai-sinh:hover {
+            border-top: 5px solid #3498db; /* Màu xanh của nước/gió/khí quyển */
+        }
+
+        .card.tao-nui:hover {
+            border-top: 5px solid #27ae60; /* Màu xanh lục của địa hình */
+        }
+
+        .icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+
+        .card:hover .btn {
+            background: #1abc9c;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mô Phỏng Địa Chất Học</h1>
+        <p>Chọn một chủ đề dưới đây để khám phá các hiện tượng địa lý</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Ô 1: Nội sinh -->
+        <a href="Mohinhmophong.html" class="card noi-sinh">
+            <div>
+                <div class="icon">🌋</div>
+                <h2>Nội Sinh</h2>
+                <p>Khám phá các lực phát sinh từ bên trong Trái Đất như magma, động đất và sự dịch chuyển các mảng kiến tạo.</p>
+            </div>
+            <div class="btn">Khám phá</div>
+        </a>
+
+        <!-- Ô 2: Ngoại sinh -->
+        <a href="QTNS.html" class="card ngoai-sinh">
+            <div>
+                <div class="icon">💨</div>
+                <h2>Ngoại Sinh</h2>
+                <p>Tìm hiểu tác động của gió, nước, nhiệt độ làm phong hóa, bóc mòn và bồi tụ bề mặt địa hình.</p>
+            </div>
+            <div class="btn">Khám phá</div>
+        </a>
+
+        <!-- Ô 3: Hiện tượng tạo núi -->
+        <a href="hientuongtaonui.html" class="card tao-nui">
+            <div>
+                <div class="icon">🏔️</div>
+                <h2>Hiện Tượng Tạo Núi</h2>
+                <p>Mô phỏng quá trình uốn nếp, đứt gãy do các lực nén ép tạo nên những dãy núi hùng vĩ.</p>
+            </div>
+            <div class="btn">Khám phá</div>
+        </a>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,2080 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Thử thách sau khám phá - Địa đạo Củ Chi</title>
+
+<style>
+:root{
+    --bg:#c89a6a;
+    --paper:#f6ead8;
+    --paper-2:#ecd2b0;
+
+    --text:#3b2418;
+    --muted:#7a5d49;
+
+    --primary:#6d3d27;
+    --primary-dark:#542d1d;
+
+    --earth:#7a452b;
+    --earth-dark:#4a291b;
+
+    --green:#5d6b3f;
+    --green-light:#ece6d8;
+
+    --gold:#d0a15a;
+    --gold-light:#f5e0bc;
+
+    --correct:#547148;
+    --correct-bg:#e9f0e1;
+
+    --wrong:#9a4c40;
+    --wrong-bg:#f4e2dc;
+
+    --border:rgba(77,45,29,.14);
+
+    --shadow:
+        0 18px 46px
+        rgba(70,38,24,.16);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+
+    font-family:
+        "Be Vietnam Pro",
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background:
+        linear-gradient(
+            180deg,
+            #b9784d 0%,
+            #c88f61 18%,
+            #d7aa77 45%,
+            #e4c08d 72%,
+            #efd6ac 100%
+        );
+
+    color:var(--text);
+}
+
+/* NAVBAR */
+.navbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    height:68px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 28px;
+
+    background:
+        rgba(245,232,212,.95);
+
+    backdrop-filter:
+        blur(10px);
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+.logo{
+    color:var(--text);
+    text-decoration:none;
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:.04em;
+}
+
+.menu{
+    display:flex;
+    align-items:center;
+    gap:26px;
+}
+
+.menu a{
+    color:var(--text);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:800;
+}
+
+.menu a:hover{
+    color:var(--earth);
+}
+
+/* HERO */
+.hero{
+    position:relative;
+    overflow:hidden;
+
+    padding:
+        72px 24px
+        64px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5e321f 0%,
+            #7a452b 40%,
+            #a86a3e 72%,
+            #c88b54 100%
+        );
+
+    color:#fff7ee;
+}
+
+.hero::before{
+    content:"";
+
+    position:absolute;
+
+    width:430px;
+    height:430px;
+
+    border-radius:50%;
+
+    top:-230px;
+    right:-100px;
+
+    background:
+        rgba(255,205,130,.09);
+}
+
+.hero::after{
+    content:"";
+
+    position:absolute;
+
+    width:330px;
+    height:330px;
+
+    border-radius:50%;
+
+    bottom:-190px;
+    left:-100px;
+
+    background:
+        rgba(255,255,255,.05);
+}
+
+.hero-inner{
+    position:relative;
+    z-index:2;
+
+    width:
+        min(
+            1080px,
+            calc(100% - 10px)
+        );
+
+    margin:auto;
+}
+
+.eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+
+    margin-bottom:15px;
+
+    padding:7px 12px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:999px;
+
+    background:
+        rgba(255,255,255,.10);
+
+    font-size:11px;
+    font-weight:900;
+
+    letter-spacing:1.1px;
+}
+
+.hero h1{
+    max-width:760px;
+
+    margin-bottom:14px;
+
+    font-size:
+        clamp(
+            32px,
+            5vw,
+            58px
+        );
+
+    line-height:1.08;
+}
+
+.hero p{
+    max-width:720px;
+
+    color:
+        rgba(255,255,255,.80);
+
+    font-size:16px;
+
+    line-height:1.75;
+}
+
+/* PROGRESS */
+.progress-wrap{
+    margin-top:30px;
+    max-width:760px;
+}
+
+.progress-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:8px;
+
+    color:
+        rgba(255,255,255,.84);
+
+    font-size:12px;
+    font-weight:800;
+}
+
+.progress-track{
+    width:100%;
+    height:9px;
+
+    overflow:hidden;
+
+    border-radius:999px;
+
+    background:
+        rgba(255,255,255,.17);
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #f0c46d,
+            #f2dfaf
+        );
+
+    transition:
+        width .35s ease;
+}
+
+/* MAIN */
+.main{
+    width:
+        min(
+            1080px,
+            calc(100% - 30px)
+        );
+
+    margin:
+        34px auto
+        70px;
+}
+
+/* STUDENT CARD */
+.student-card{
+    margin-bottom:22px;
+
+    padding:24px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:24px;
+
+    background:
+        var(--paper);
+
+    box-shadow:
+        var(--shadow);
+}
+
+.student-card h2{
+    margin-bottom:6px;
+    font-size:20px;
+}
+
+.student-card p{
+    margin-bottom:18px;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    line-height:1.6;
+}
+
+.student-grid{
+    display:grid;
+
+    grid-template-columns:
+        2fr 1fr;
+
+    gap:14px;
+}
+
+.field label{
+    display:block;
+
+    margin-bottom:7px;
+
+    font-size:12px;
+    font-weight:900;
+}
+
+.field input{
+    width:100%;
+
+    min-height:48px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid
+        #d7b995;
+
+    border-radius:13px;
+
+    outline:none;
+
+    background:#fff9f0;
+
+    color:var(--text);
+
+    font:inherit;
+
+    transition:.2s;
+}
+
+.field input:focus{
+    border-color:
+        #9f744f;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(122,69,43,.09);
+}
+
+/* SECTIONS */
+.challenge-section{
+    margin-bottom:24px;
+
+    padding:28px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:26px;
+
+    background:
+        var(--paper);
+
+    box-shadow:
+        var(--shadow);
+}
+
+.section-head{
+    display:flex;
+    gap:16px;
+
+    margin-bottom:25px;
+}
+
+.section-number{
+    flex:
+        0 0 auto;
+
+    width:48px;
+    height:48px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6d3d27,
+            #9d6540
+        );
+
+    color:white;
+
+    font-size:18px;
+    font-weight:900;
+
+    box-shadow:
+        0 8px 20px
+        rgba(100,56,34,.18);
+}
+
+.section-head h2{
+    margin-bottom:5px;
+    font-size:22px;
+}
+
+.section-head p{
+    color:var(--muted);
+
+    font-size:13px;
+
+    line-height:1.6;
+}
+
+/* QUESTION */
+.question{
+    margin-bottom:18px;
+
+    padding:21px;
+
+    border:
+        1px solid
+        #dcc3a3;
+
+    border-radius:18px;
+
+    background:#fbf3e7;
+
+    transition:.2s;
+}
+
+.question:last-child{
+    margin-bottom:0;
+}
+
+.question-number{
+    margin-bottom:7px;
+
+    color:#835335;
+
+    font-size:11px;
+    font-weight:900;
+
+    letter-spacing:.8px;
+}
+
+.question-title{
+    margin-bottom:16px;
+
+    font-size:16px;
+    font-weight:800;
+
+    line-height:1.55;
+}
+
+.options{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+}
+
+.option{
+    position:relative;
+}
+
+.option input{
+    position:absolute;
+    opacity:0;
+    pointer-events:none;
+}
+
+.option label{
+    min-height:50px;
+
+    display:flex;
+    align-items:center;
+
+    gap:10px;
+
+    padding:
+        11px 13px;
+
+    border:
+        1px solid
+        #d8b894;
+
+    border-radius:13px;
+
+    background:#f8eedf;
+
+    cursor:pointer;
+
+    color:#5c4333;
+
+    font-size:13px;
+    font-weight:700;
+
+    line-height:1.45;
+
+    transition:.18s;
+}
+
+.option label::before{
+    content:"";
+
+    flex:
+        0 0 auto;
+
+    width:17px;
+    height:17px;
+
+    border:
+        2px solid
+        #b99572;
+
+    border-radius:50%;
+
+    background:white;
+}
+
+.option input:checked + label{
+    border-color:
+        #9a6b45;
+
+    background:
+        #f0dcc0;
+
+    color:
+        var(--text);
+}
+
+.option input:checked + label::before{
+    border:
+        5px solid
+        #8f6240;
+
+    background:white;
+}
+
+.option.correct label{
+    border-color:
+        var(--correct);
+
+    background:
+        var(--correct-bg);
+}
+
+.option.wrong label{
+    border-color:
+        var(--wrong);
+
+    background:
+        var(--wrong-bg);
+}
+
+/* TEXT */
+.text-question{
+    margin-bottom:18px;
+
+    padding:21px;
+
+    border:
+        1px solid
+        #dcc3a3;
+
+    border-radius:18px;
+
+    background:#fbf3e7;
+}
+
+.text-question:last-child{
+    margin-bottom:0;
+}
+
+.text-question textarea{
+    width:100%;
+
+    min-height:120px;
+
+    resize:vertical;
+
+    margin-top:13px;
+
+    padding:14px;
+
+    border:
+        1px solid
+        #d7b995;
+
+    border-radius:14px;
+
+    outline:none;
+
+    background:#fff8ee;
+
+    color:var(--text);
+
+    font:inherit;
+
+    line-height:1.65;
+}
+
+.text-question textarea:focus{
+    border-color:
+        #9f744f;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(122,69,43,.09);
+}
+
+.character{
+    margin-top:6px;
+
+    text-align:right;
+
+    color:#a38469;
+
+    font-size:11px;
+}
+
+/* NOTE */
+.observation-note{
+    margin-bottom:20px;
+
+    padding:16px 18px;
+
+    border-left:
+        4px solid var(--gold);
+
+    border-radius:13px;
+
+    background:
+        var(--gold-light);
+
+    color:#6d5239;
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+/* ACTIONS */
+.actions{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:12px;
+
+    margin-top:28px;
+
+    flex-wrap:wrap;
+}
+
+.btn{
+    min-height:50px;
+
+    padding:
+        0 21px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:14px;
+    font-weight:900;
+
+    transition:.2s;
+}
+
+.btn-primary{
+    background:
+        linear-gradient(
+            135deg,
+            #6d3d27,
+            #925c3a
+        );
+
+    color:#fff;
+
+    box-shadow:
+        0 10px 24px
+        rgba(80,43,27,.22);
+}
+
+.btn-primary:hover{
+    background:
+        linear-gradient(
+            135deg,
+            #542d1d,
+            #7d4b2f
+        );
+
+    transform:
+        translateY(-2px);
+}
+
+.btn-secondary{
+    border:
+        1px solid
+        #d7b995;
+
+    background:#f8eddc;
+
+    color:var(--text);
+}
+
+.btn-secondary:hover{
+    background:#f1dec6;
+}
+
+/* RESULT */
+.result{
+    display:none;
+
+    margin-top:26px;
+
+    overflow:hidden;
+
+    border-radius:26px;
+
+    border:
+        1px solid var(--border);
+
+    background:
+        var(--paper);
+
+    box-shadow:
+        var(--shadow);
+}
+
+.result.show{
+    display:block;
+}
+
+.result-top{
+    padding:
+        28px;
+
+    text-align:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5b311f,
+            #804b2e,
+            #b37242
+        );
+
+    color:white;
+}
+
+.score-circle{
+    width:118px;
+    height:118px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-direction:column;
+
+    margin:
+        0 auto
+        16px;
+
+    border:
+        4px solid
+        rgba(255,255,255,.28);
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.10);
+}
+
+.score-circle strong{
+    font-size:36px;
+}
+
+.score-circle span{
+    color:
+        rgba(255,255,255,.72);
+
+    font-size:11px;
+    font-weight:800;
+}
+
+.result-top h2{
+    margin-bottom:6px;
+}
+
+.result-top p{
+    color:
+        rgba(255,255,255,.80);
+
+    line-height:1.6;
+}
+
+.result-content{
+    padding:26px;
+}
+
+.result-box{
+    margin-bottom:13px;
+
+    padding:16px;
+
+    border-radius:15px;
+
+    background:#f1e2ce;
+}
+
+.result-box strong{
+    display:block;
+
+    margin-bottom:5px;
+}
+
+.result-box p{
+    color:#715a48;
+
+    font-size:13px;
+
+    line-height:1.65;
+}
+
+/* WARNING */
+.warning{
+    display:none;
+
+    margin-bottom:18px;
+
+    padding:13px 15px;
+
+    border:
+        1px solid
+        #d4a65e;
+
+    border-radius:13px;
+
+    background:#f7e2bb;
+
+    color:#77501c;
+
+    font-size:13px;
+    font-weight:700;
+}
+
+.warning.show{
+    display:block;
+}
+
+/* MOBILE */
+@media(max-width:700px){
+    .navbar{
+        padding:
+            0 14px;
+    }
+
+    .menu{
+        display:none;
+    }
+
+    .hero{
+        padding:
+            50px 18px;
+    }
+
+    .student-grid{
+        grid-template-columns:1fr;
+    }
+
+    .challenge-section{
+        padding:19px;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .section-number{
+        width:42px;
+        height:42px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+<a
+    class="logo"
+    href="index.html">
+
+    ĐỊA ĐẠO CỦ CHI
+
+</a>
+
+<nav class="menu">
+
+<a href="index.html">
+    Trang chủ
+</a>
+
+<a href="thong-tin.html">
+    Thông tin
+</a>
+
+<a href="so-do.html">
+    Sơ đồ 3D
+</a>
+
+<a href="thu-thach.html">
+    Thử thách
+</a>
+
+</nav>
+
+</header>
+
+<section class="hero">
+
+<div class="hero-inner">
+
+<div class="eyebrow">
+    🧭 CHẶNG CUỐI HÀNH TRÌNH
+</div>
+
+<h1>
+    Thử thách sau khám phá
+</h1>
+
+<p>
+    Em đã tìm hiểu thông tin và quan sát mô hình 3D Địa đạo Củ Chi.
+    Bây giờ hãy hoàn thành nhiệm vụ cá nhân để kiểm tra những điều
+    em đã khám phá, sau đó viết lại suy nghĩ của mình.
+</p>
+
+<div class="progress-wrap">
+
+<div class="progress-head">
+
+<span>
+    TIẾN ĐỘ HOÀN THÀNH
+</span>
+
+<span id="progressText">
+    0%
+</span>
+
+</div>
+
+<div class="progress-track">
+<div
+    id="progressBar"
+    class="progress-bar">
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<main class="main">
+
+<section class="student-card">
+
+<h2>
+    👤 Thông tin người thực hiện
+</h2>
+
+<p>
+    Đây là nhiệm vụ cá nhân.
+    Em hãy nhập đúng họ tên và lớp trước khi bắt đầu.
+</p>
+
+<div class="student-grid">
+
+<div class="field">
+
+<label for="studentName">
+    Họ và tên
+</label>
+
+<input
+    id="studentName"
+    type="text"
+    placeholder="Ví dụ: Nguyễn Minh Anh">
+
+</div>
+
+<div class="field">
+
+<label for="studentClass">
+    Lớp
+</label>
+
+<input
+    id="studentClass"
+    type="text"
+    placeholder="Ví dụ: 8A1">
+
+</div>
+
+</div>
+
+</section>
+
+<section class="challenge-section">
+
+<div class="section-head">
+
+<div class="section-number">
+    1
+</div>
+
+<div>
+
+<h2>
+    Nhớ đúng điều em vừa khám phá
+</h2>
+
+<p>
+    Chọn một phương án đúng nhất cho mỗi câu hỏi.
+</p>
+
+</div>
+
+</div>
+
+<div class="question objective-question">
+
+<div class="question-number">
+    CÂU 1
+</div>
+
+<div class="question-title">
+    Trong hệ thống địa đạo,
+    Bếp Hoàng Cầm chủ yếu gắn với hoạt động nào?
+</div>
+
+<div class="options">
+
+<div class="option">
+<input type="radio" name="q1" id="q1a" value="A">
+<label for="q1a">
+    A. Tổ chức hội họp
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q1" id="q1b" value="B">
+<label for="q1b">
+    B. Nấu ăn và hạn chế khói dễ bị phát hiện
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q1" id="q1c" value="C">
+<label for="q1c">
+    C. Chăm sóc người bị thương
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q1" id="q1d" value="D">
+<label for="q1d">
+    D. Cất giữ tài liệu
+</label>
+</div>
+
+</div>
+
+</div>
+
+<div class="question objective-question">
+
+<div class="question-number">
+    CÂU 2
+</div>
+
+<div class="question-title">
+    Không gian nào trong mô hình
+    được bố trí giường điều trị,
+    vật tư y tế và nơi chăm sóc người bị thương?
+</div>
+
+<div class="options">
+
+<div class="option">
+<input type="radio" name="q2" id="q2a" value="A">
+<label for="q2a">
+    A. Hầm quân y
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q2" id="q2b" value="B">
+<label for="q2b">
+    B. Hầm chỉ huy
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q2" id="q2c" value="C">
+<label for="q2c">
+    C. Kho dự trữ
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q2" id="q2d" value="D">
+<label for="q2d">
+    D. Hầm hội họp
+</label>
+</div>
+
+</div>
+
+</div>
+
+<div class="question objective-question">
+
+<div class="question-number">
+    CÂU 3
+</div>
+
+<div class="question-title">
+    Hầm chỉ huy khác với hầm sinh hoạt
+    rõ nhất ở chức năng nào?
+</div>
+
+<div class="options">
+
+<div class="option">
+<input type="radio" name="q3" id="q3a" value="A">
+<label for="q3a">
+    A. Nghỉ ngơi và ngủ
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q3" id="q3b" value="B">
+<label for="q3b">
+    B. Nấu ăn
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q3" id="q3c" value="C">
+<label for="q3c">
+    C. Làm việc, trao đổi và tổ chức chỉ huy
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q3" id="q3d" value="D">
+<label for="q3d">
+    D. Lấy nước
+</label>
+</div>
+
+</div>
+
+</div>
+
+<div class="question objective-question">
+
+<div class="question-number">
+    CÂU 4
+</div>
+
+<div class="question-title">
+    Vì sao trong một hệ thống địa đạo
+    cần có kho dự trữ?
+</div>
+
+<div class="options">
+
+<div class="option">
+<input type="radio" name="q4" id="q4a" value="A">
+<label for="q4a">
+    A. Để làm cho đường hầm rộng hơn
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q4" id="q4b" value="B">
+<label for="q4b">
+    B. Để dự trữ lương thực và vật dụng cần thiết
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q4" id="q4c" value="C">
+<label for="q4c">
+    C. Để thay thế giếng nước
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q4" id="q4d" value="D">
+<label for="q4d">
+    D. Để trồng cây dưới lòng đất
+</label>
+</div>
+
+</div>
+
+</div>
+
+<div class="question objective-question">
+
+<div class="question-number">
+    CÂU 5
+</div>
+
+<div class="question-title">
+    Chi tiết nào giúp duy trì điều kiện sống
+    và hoạt động lâu dài trong địa đạo?
+</div>
+
+<div class="options">
+
+<div class="option">
+<input type="radio" name="q5" id="q5a" value="A">
+<label for="q5a">
+    A. Giếng nước và hệ thống thông khí
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q5" id="q5b" value="B">
+<label for="q5b">
+    B. Chỉ có cửa ra vào
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q5" id="q5c" value="C">
+<label for="q5c">
+    C. Chỉ có hầm hội họp
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q5" id="q5d" value="D">
+<label for="q5d">
+    D. Chỉ có hầm chiến đấu
+</label>
+</div>
+
+</div>
+
+</div>
+
+<div class="question objective-question">
+
+<div class="question-number">
+    CÂU 6
+</div>
+
+<div class="question-title">
+    Qua mô hình 3D, nhận xét nào phù hợp nhất
+    về hệ thống Địa đạo Củ Chi?
+</div>
+
+<div class="options">
+
+<div class="option">
+<input type="radio" name="q6" id="q6a" value="A">
+<label for="q6a">
+    A. Chỉ gồm một đường hầm đơn giản
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q6" id="q6b" value="B">
+<label for="q6b">
+    B. Chỉ dùng để trú ẩn
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q6" id="q6c" value="C">
+<label for="q6c">
+    C. Là hệ thống nhiều không gian có chức năng khác nhau và liên kết với nhau
+</label>
+</div>
+
+<div class="option">
+<input type="radio" name="q6" id="q6d" value="D">
+<label for="q6d">
+    D. Các hầm hoàn toàn tách biệt
+</label>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="challenge-section">
+
+<div class="section-head">
+
+<div class="section-number">
+    2
+</div>
+
+<div>
+
+<h2>
+    Quan sát – giải thích
+</h2>
+
+<p>
+    Không chỉ nhớ tên từng hầm,
+    em hãy giải thích điều mình quan sát được.
+</p>
+
+</div>
+
+</div>
+
+<div class="observation-note">
+
+💡 <strong>Gợi ý:</strong>
+Hãy nhớ lại sơ đồ 3D:
+các phòng không nằm riêng lẻ mà được nối với nhau bằng
+đường hầm, đồng thời có những bộ phận phục vụ sinh hoạt
+như bếp, nước, thông khí, nghỉ ngơi và quân y.
+
+</div>
+
+<div class="text-question">
+
+<div class="question-number">
+    CÂU 7
+</div>
+
+<div class="question-title">
+    Theo em, vì sao trong địa đạo lại cần bố trí
+    nhiều không gian khác nhau như bếp,
+    nơi ở, quân y, kho dự trữ và hầm chỉ huy?
+</div>
+
+<textarea
+    id="answer7"
+    maxlength="500"
+    placeholder="Viết câu trả lời của em...">
+</textarea>
+
+<div
+    class="character"
+    data-counter="answer7">
+    0 / 500
+</div>
+
+</div>
+
+<div class="text-question">
+
+<div class="question-number">
+    CÂU 8
+</div>
+
+<div class="question-title">
+    Hãy chọn một chi tiết trong mô hình 3D
+    khiến em ấn tượng nhất và giải thích vì sao.
+</div>
+
+<textarea
+    id="answer8"
+    maxlength="500"
+    placeholder="Ví dụ: Bếp Hoàng Cầm, giếng nước, hầm quân y, hầm hội họp...">
+</textarea>
+
+<div
+    class="character"
+    data-counter="answer8">
+    0 / 500
+</div>
+
+</div>
+
+</section>
+
+<section class="challenge-section">
+
+<div class="section-head">
+
+<div class="section-number">
+    3
+</div>
+
+<div>
+
+<h2>
+    Điều em muốn nói sau hành trình
+</h2>
+
+<p>
+    Phần này không có đáp án đúng hay sai.
+    Hãy viết suy nghĩ thật của riêng em.
+</p>
+
+</div>
+
+</div>
+
+<div class="text-question">
+
+<div class="question-number">
+    CÂU 9 — CẢM NHẬN CÁ NHÂN
+</div>
+
+<div class="question-title">
+    Sau khi tìm hiểu và khám phá mô hình Địa đạo Củ Chi,
+    em có suy nghĩ hoặc cảm nhận gì về cuộc sống
+    và hoạt động của con người trong điều kiện dưới lòng đất?
+</div>
+
+<textarea
+    id="answer9"
+    maxlength="700"
+    placeholder="Viết khoảng 4–6 câu...">
+</textarea>
+
+<div
+    class="character"
+    data-counter="answer9">
+    0 / 700
+</div>
+
+</div>
+
+<div class="text-question">
+
+<div class="question-number">
+    CÂU 10 — THÔNG ĐIỆP
+</div>
+
+<div class="question-title">
+    Nếu được gửi một lời nhắn tới một người bạn
+    chưa từng tìm hiểu về Địa đạo Củ Chi,
+    em sẽ nói điều gì để bạn hiểu giá trị của di tích này?
+</div>
+
+<textarea
+    id="answer10"
+    maxlength="500"
+    placeholder="Viết thông điệp của em...">
+</textarea>
+
+<div
+    class="character"
+    data-counter="answer10">
+    0 / 500
+</div>
+
+</div>
+
+</section>
+
+<div
+    id="warning"
+    class="warning">
+
+    ⚠️ Em hãy hoàn thành đầy đủ thông tin
+    và các câu hỏi trước khi nộp bài.
+
+</div>
+
+<div class="actions">
+
+<button
+    class="btn btn-secondary"
+    onclick="resetChallenge()">
+    ↻ Làm lại
+</button>
+
+<button
+    class="btn btn-primary"
+    onclick="submitChallenge()">
+    Hoàn thành thử thách →
+</button>
+
+</div>
+
+<section
+    id="result"
+    class="result">
+
+<div class="result-top">
+
+<div class="score-circle">
+
+<strong id="scoreValue">
+    0/6
+</strong>
+
+<span>
+    PHẦN KIẾN THỨC
+</span>
+
+</div>
+
+<h2 id="resultTitle">
+    Hoàn thành!
+</h2>
+
+<p id="resultMessage"></p>
+
+</div>
+
+<div class="result-content">
+
+<div class="result-box">
+
+<strong>
+    👤 Người thực hiện
+</strong>
+
+<p id="resultStudent"></p>
+
+</div>
+
+<div class="result-box">
+
+<strong>
+    🧠 Kết quả phần kiến thức
+</strong>
+
+<p id="resultKnowledge"></p>
+
+</div>
+
+<div class="result-box">
+
+<strong>
+    ✍️ Phần suy ngẫm
+</strong>
+
+<p>
+    Câu trả lời tự luận và cảm nhận của em
+    đã được ghi nhận trong bài làm.
+    Những câu này không được chấm đúng – sai tự động.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<script>
+const correctAnswers = {
+    q1:"B",
+    q2:"A",
+    q3:"C",
+    q4:"B",
+    q5:"A",
+    q6:"C"
+};
+
+function updateProgress(){
+
+    let completed = 0;
+    const total = 12;
+
+    if(
+        document
+        .getElementById("studentName")
+        .value
+        .trim()
+    ){
+        completed++;
+    }
+
+    if(
+        document
+        .getElementById("studentClass")
+        .value
+        .trim()
+    ){
+        completed++;
+    }
+
+    for(let i=1;i<=6;i++){
+        if(
+            document.querySelector(
+                `input[name="q${i}"]:checked`
+            )
+        ){
+            completed++;
+        }
+    }
+
+    [
+        "answer7",
+        "answer8",
+        "answer9",
+        "answer10"
+    ].forEach(id=>{
+        if(
+            document
+            .getElementById(id)
+            .value
+            .trim()
+            .length >= 10
+        ){
+            completed++;
+        }
+    });
+
+    const percent =
+        Math.round(
+            completed /
+            total *
+            100
+        );
+
+    document
+        .getElementById("progressBar")
+        .style
+        .width =
+        percent + "%";
+
+    document
+        .getElementById("progressText")
+        .textContent =
+        percent + "%";
+}
+
+function setupCounters(){
+
+    document
+    .querySelectorAll("textarea")
+    .forEach(area=>{
+
+        area.addEventListener(
+            "input",
+            ()=>{
+
+                const counter =
+                    document
+                    .querySelector(
+                        `[data-counter="${area.id}"]`
+                    );
+
+                counter.textContent =
+                    area.value.length
+                    +
+                    " / "
+                    +
+                    area.maxLength;
+
+                updateProgress();
+            }
+        );
+    });
+}
+
+function isComplete(){
+
+    const name =
+        document
+        .getElementById("studentName")
+        .value
+        .trim();
+
+    const studentClass =
+        document
+        .getElementById("studentClass")
+        .value
+        .trim();
+
+    if(!name || !studentClass){
+        return false;
+    }
+
+    for(let i=1;i<=6;i++){
+        if(
+            !document.querySelector(
+                `input[name="q${i}"]:checked`
+            )
+        ){
+            return false;
+        }
+    }
+
+    const textAnswers = [
+        document.getElementById("answer7").value.trim(),
+        document.getElementById("answer8").value.trim(),
+        document.getElementById("answer9").value.trim(),
+        document.getElementById("answer10").value.trim()
+    ];
+
+    return textAnswers
+        .every(
+            answer =>
+            answer.length >= 10
+        );
+}
+
+function gradeQuiz(){
+
+    let score = 0;
+
+    for(let i=1;i<=6;i++){
+
+        const selected =
+            document.querySelector(
+                `input[name="q${i}"]:checked`
+            );
+
+        const question =
+            selected.closest(".question");
+
+        question
+        .querySelectorAll(".option")
+        .forEach(option=>{
+            option.classList.remove(
+                "correct",
+                "wrong"
+            );
+        });
+
+        const correct =
+            correctAnswers[`q${i}`];
+
+        const correctInput =
+            question.querySelector(
+                `input[value="${correct}"]`
+            );
+
+        correctInput
+        .closest(".option")
+        .classList.add("correct");
+
+        if(selected.value === correct){
+            score++;
+        }else{
+            selected
+            .closest(".option")
+            .classList.add("wrong");
+        }
+    }
+
+    return score;
+}
+
+function submitChallenge(){
+
+    const warning =
+        document
+        .getElementById("warning");
+
+    warning.classList.remove("show");
+
+    if(!isComplete()){
+
+        warning.classList.add("show");
+
+        warning.scrollIntoView({
+            behavior:"smooth",
+            block:"center"
+        });
+
+        return;
+    }
+
+    const score = gradeQuiz();
+
+    const name =
+        document
+        .getElementById("studentName")
+        .value
+        .trim();
+
+    const studentClass =
+        document
+        .getElementById("studentClass")
+        .value
+        .trim();
+
+    document
+        .getElementById("scoreValue")
+        .textContent =
+        `${score}/6`;
+
+    document
+        .getElementById("resultStudent")
+        .textContent =
+        `${name} – Lớp ${studentClass}`;
+
+    document
+        .getElementById("resultKnowledge")
+        .textContent =
+        `Em trả lời đúng ${score} trên 6 câu hỏi kiến thức.`;
+
+    let title = "";
+    let message = "";
+
+    if(score === 6){
+
+        title =
+            "Xuất sắc!";
+
+        message =
+            "Em đã quan sát rất kĩ và nắm chắc những nội dung chính của hành trình khám phá.";
+
+    }else if(score >= 4){
+
+        title =
+            "Hoàn thành tốt!";
+
+        message =
+            "Em đã nắm được phần lớn nội dung. Hãy xem lại những câu chưa chính xác để hoàn thiện hiểu biết của mình.";
+
+    }else{
+
+        title =
+            "Em đã hoàn thành thử thách!";
+
+        message =
+            "Hãy quay lại phần thông tin hoặc mô hình 3D để khám phá thêm những chi tiết em còn bỏ sót.";
+    }
+
+    document
+        .getElementById("resultTitle")
+        .textContent =
+        title;
+
+    document
+        .getElementById("resultMessage")
+        .textContent =
+        message;
+
+    const result =
+        document
+        .getElementById("result");
+
+    result.classList.add("show");
+
+    saveLocally(score);
+
+    result.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+    });
+}
+
+function saveLocally(score){
+
+    const answers = {};
+
+    for(let i=1;i<=6;i++){
+        answers[`q${i}`] =
+            document.querySelector(
+                `input[name="q${i}"]:checked`
+            ).value;
+    }
+
+    const submission = {
+
+        studentName:
+            document
+            .getElementById("studentName")
+            .value
+            .trim(),
+
+        studentClass:
+            document
+            .getElementById("studentClass")
+            .value
+            .trim(),
+
+        answers:answers,
+
+        answer7:
+            document
+            .getElementById("answer7")
+            .value
+            .trim(),
+
+        answer8:
+            document
+            .getElementById("answer8")
+            .value
+            .trim(),
+
+        answer9:
+            document
+            .getElementById("answer9")
+            .value
+            .trim(),
+
+        answer10:
+            document
+            .getElementById("answer10")
+            .value
+            .trim(),
+
+        score:score,
+        total:6,
+
+        submittedAt:
+            new Date().toISOString()
+    };
+
+    localStorage.setItem(
+        "cuChiChallengeSubmission",
+        JSON.stringify(submission)
+    );
+}
+
+function resetChallenge(){
+
+    const confirmed =
+        confirm(
+            "Em có chắc muốn xóa toàn bộ câu trả lời và làm lại từ đầu?"
+        );
+
+    if(!confirmed){
+        return;
+    }
+
+    document
+        .querySelectorAll(
+            'input[type="radio"]'
+        )
+        .forEach(radio=>{
+            radio.checked = false;
+        });
+
+    document
+        .querySelectorAll("textarea")
+        .forEach(area=>{
+            area.value = "";
+        });
+
+    document
+        .getElementById("studentName")
+        .value =
+        "";
+
+    document
+        .getElementById("studentClass")
+        .value =
+        "";
+
+    document
+        .querySelectorAll(".option")
+        .forEach(option=>{
+            option.classList.remove(
+                "correct",
+                "wrong"
+            );
+        });
+
+    document
+        .querySelectorAll(".character")
+        .forEach(counter=>{
+
+            const id =
+                counter.dataset.counter;
+
+            const area =
+                document.getElementById(id);
+
+            counter.textContent =
+                `0 / ${area.maxLength}`;
+        });
+
+    document
+        .getElementById("result")
+        .classList
+        .remove("show");
+
+    localStorage.removeItem(
+        "cuChiChallengeSubmission"
+    );
+
+    updateProgress();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+document
+.querySelectorAll(
+    'input[type="radio"]'
+)
+.forEach(input=>{
+    input.addEventListener(
+        "change",
+        updateProgress
+    );
+});
+
+document
+.getElementById("studentName")
+.addEventListener(
+    "input",
+    updateProgress
+);
+
+document
+.getElementById("studentClass")
+.addEventListener(
+    "input",
+    updateProgress
+);
+
+setupCounters();
+updateProgress();
+</script>
+
+</body>
+</html>

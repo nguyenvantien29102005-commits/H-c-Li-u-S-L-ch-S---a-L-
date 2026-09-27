@@ -1,0 +1,6150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sơ đồ khám phá 3D - Địa đạo Củ Chi</title>
+
+<style>
+:root{
+    --background:#d8ded6;
+    --panel:rgba(246,239,227,.96);
+    --panel-item:#e7dccb;
+    --text:#24384a;
+    --muted:#6f7d85;
+    --primary:#2d4355;
+    --primary-dark:#203542;
+    --shadow:0 18px 45px rgba(30,40,46,.17);
+    --border:rgba(36,56,74,.09);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+}
+
+body{
+    font-family:
+        "Be Vietnam Pro",
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color:var(--text);
+    background:var(--background);
+    overflow:hidden;
+}
+
+.navbar{
+    height:68px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 24px;
+
+    background:#f5f6f1;
+
+    border-bottom:
+        1px solid var(--border);
+
+    position:relative;
+
+    z-index:100;
+}
+
+.logo{
+    color:var(--text);
+
+    text-decoration:none;
+
+    font-size:18px;
+    font-weight:900;
+
+    letter-spacing:.04em;
+}
+
+.menu{
+    display:flex;
+    gap:28px;
+    align-items:center;
+}
+
+.menu a{
+    color:var(--text);
+
+    text-decoration:none;
+
+    font-size:14px;
+    font-weight:800;
+}
+
+.menu a:hover{
+    color:#6d3d27;
+}
+
+.viewer{
+    position:relative;
+
+    width:100%;
+    height:
+        calc(100vh - 68px);
+
+    min-height:650px;
+
+    overflow:hidden;
+
+    background:var(--background);
+}
+
+#scene3d{
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:1;
+}
+
+.focus-panel{
+    position:absolute;
+
+    top:18px;
+    right:18px;
+
+    z-index:15;
+
+    width:260px;
+
+    max-height:
+        calc(100% - 36px);
+
+    overflow-y:auto;
+
+    padding:14px;
+
+    background:var(--panel);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:22px;
+
+    box-shadow:var(--shadow);
+
+    backdrop-filter:
+        blur(12px);
+}
+
+.focus-panel h3{
+    font-size:15px;
+
+    margin:
+        2px 4px
+        11px;
+}
+
+.focus-panel p{
+    margin:
+        0 4px
+        12px;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    line-height:1.55;
+}
+
+.focus-btn{
+    width:100%;
+
+    min-height:43px;
+
+    margin-bottom:8px;
+
+    padding:
+        9px 12px;
+
+    border:none;
+
+    border-radius:13px;
+
+    background:
+        var(--panel-item);
+
+    color:var(--text);
+
+    cursor:pointer;
+
+    text-align:left;
+
+    font-size:13px;
+    font-weight:800;
+
+    transition:
+        transform .2s ease,
+        background .2s ease;
+}
+
+.focus-btn:hover{
+    background:#dccdb7;
+
+    transform:
+        translateX(-3px);
+}
+
+.focus-btn.primary{
+    background:
+        var(--primary);
+
+    color:white;
+}
+
+.focus-btn.primary:hover{
+    background:
+        var(--primary-dark);
+}
+
+.help-panel{
+    position:absolute;
+
+    left:18px;
+    bottom:18px;
+
+    z-index:15;
+
+    width:215px;
+
+    padding:
+        13px 15px;
+
+    border-radius:17px;
+
+    background:
+        rgba(249,246,239,.94);
+
+    border:
+        1px solid var(--border);
+
+    box-shadow:
+        var(--shadow);
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    line-height:1.65;
+}
+
+.help-panel strong{
+    color:var(--text);
+}
+
+.hover-name{
+    position:absolute;
+
+    display:none;
+
+    z-index:30;
+
+    pointer-events:none;
+
+    padding:
+        7px 10px;
+
+    border-radius:9px;
+
+    background:
+        rgba(25,34,40,.94);
+
+    color:white;
+
+    font-size:12px;
+    font-weight:800;
+
+    box-shadow:
+        0 8px 20px
+        rgba(0,0,0,.2);
+}
+
+.overlay{
+    position:absolute;
+
+    inset:0;
+
+    z-index:40;
+
+    display:none;
+
+    background:
+        rgba(15,23,28,.42);
+}
+
+.overlay.show{
+    display:block;
+}
+
+.info-panel{
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    z-index:50;
+
+    display:none;
+
+    width:
+        min(
+            600px,
+            calc(100% - 30px)
+        );
+
+    max-height:86vh;
+
+    overflow-y:auto;
+
+    padding:28px;
+
+    border-radius:24px;
+
+    background:#fff;
+
+    box-shadow:
+        0 30px 90px
+        rgba(0,0,0,.30);
+}
+
+.info-panel.show{
+    display:block;
+}
+
+.close-info{
+    position:absolute;
+
+    top:14px;
+    right:14px;
+
+    width:42px;
+    height:42px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#edf0f0;
+
+    cursor:pointer;
+
+    color:var(--text);
+
+    font-size:24px;
+}
+
+.info-icon{
+    margin-bottom:5px;
+
+    font-size:42px;
+}
+
+.info-chip{
+    display:inline-block;
+
+    margin-bottom:10px;
+
+    padding:
+        5px 10px;
+
+    border-radius:999px;
+
+    background:#e4ebdf;
+
+    color:#4d6848;
+
+    font-size:10px;
+    font-weight:900;
+
+    letter-spacing:.9px;
+}
+
+.info-panel h2{
+    margin-bottom:13px;
+
+    padding-right:40px;
+
+    font-size:28px;
+}
+
+.info-panel p{
+    margin-bottom:15px;
+
+    color:#53616a;
+
+    line-height:1.75;
+}
+
+.info-panel h4{
+    margin:
+        15px 0
+        8px;
+
+    color:#6d3d27;
+
+    font-size:14px;
+}
+
+.info-panel ul{
+    padding-left:20px;
+
+    color:#53616a;
+
+    line-height:1.8;
+}
+
+.info-note{
+    margin-top:17px;
+
+    padding:
+        14px 16px;
+
+    border-left:
+        4px solid
+        #b38b5b;
+
+    border-radius:13px;
+
+    background:#f4efe7;
+
+    color:#56636b;
+
+    line-height:1.65;
+}
+
+@media(max-width:850px){
+
+    .menu{
+        display:none;
+    }
+
+    .focus-panel{
+        width:200px;
+
+        right:10px;
+        top:10px;
+
+        max-height:
+            calc(100% - 20px);
+
+        padding:11px;
+    }
+
+    .focus-panel p{
+        display:none;
+    }
+
+    .focus-btn{
+        min-height:38px;
+
+        padding:
+            7px 9px;
+
+        font-size:11px;
+    }
+
+    .help-panel{
+        left:10px;
+        bottom:10px;
+
+        width:145px;
+
+        font-size:11px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <a
+        href="index.html"
+        class="logo">
+
+        ĐỊA ĐẠO CỦ CHI
+
+    </a>
+
+
+    <nav class="menu">
+
+        <a href="index.html">
+            Trang chủ
+        </a>
+
+        <a href="thong-tin.html">
+            Thông tin
+        </a>
+
+        <a href="so-do.html">
+            Sơ đồ 3D
+        </a>
+
+        <a href="thu-thach.html">
+            Thử thách
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<main class="viewer">
+
+
+<div id="scene3d"></div>
+
+
+
+<aside class="focus-panel">
+
+    <h3>
+        Khám phá cận cảnh
+    </h3>
+
+    <p>
+        Chọn một không gian
+        để camera tiến gần và
+        quan sát bên trong.
+    </p>
+
+    <button
+        class="focus-btn primary"
+        onclick="goOverview()">
+
+        ◉ Toàn cảnh địa đạo
+
+    </button>
+
+    <button
+        class="focus-btn"
+        onclick="focusRoom('entrance')">
+
+        🚪 Cửa ra vào
+
+    </button>
+
+    <button
+        class="focus-btn"
+        onclick="focusRoom('kitchen')">
+
+        🔥 Bếp Hoàng Cầm
+
+    </button>
+
+    <button
+        class="focus-btn"
+        onclick="focusRoom('command')">
+
+        🗺️ Hầm chỉ huy
+
+    </button>
+
+    <button
+        class="focus-btn"
+        onclick="focusRoom('living')">
+
+        🛏️ Hầm sinh hoạt
+
+    </button>
+
+    <button
+        class="focus-btn"
+        onclick="focusRoom('medical')">
+
+        ✚ Hầm quân y
+
+    </button>
+
+    <button
+        class="focus-btn"
+        onclick="focusRoom('storage')">
+
+        📦 Kho dự trữ
+
+    </button>
+
+    <button
+        class="focus-btn"
+        onclick="focusRoom('meeting')">
+
+        👥 Hầm hội họp
+
+    </button>
+
+    <button
+        class="focus-btn"
+        onclick="focusRoom('aframe')">
+
+        🔺 Hầm chữ A
+
+    </button>
+
+    <button
+        class="focus-btn"
+        onclick="focusRoom('combat')">
+
+        🛡️ Hầm chiến đấu
+
+    </button>
+
+    <button
+        class="focus-btn"
+        onclick="focusRoom('well')">
+
+        💧 Giếng nước
+
+    </button>
+
+</aside>
+
+
+
+<div class="help-panel">
+
+    <strong>
+        Điều khiển mô hình
+    </strong>
+
+    <br>
+
+    🖱 Kéo chuột: xoay
+
+    <br>
+
+    🔍 Cuộn: phóng to / thu nhỏ
+
+    <br>
+
+    🔴 Chấm đỏ: xem chi tiết
+
+</div>
+
+
+
+<div
+    id="hoverName"
+    class="hover-name">
+</div>
+
+
+
+<div
+    id="overlay"
+    class="overlay"
+    onclick="closeInfo()">
+</div>
+
+
+
+<section
+    id="infoPanel"
+    class="info-panel">
+
+    <button
+        class="close-info"
+        onclick="closeInfo()">
+
+        ×
+
+    </button>
+
+    <div
+        id="infoIcon"
+        class="info-icon">
+    </div>
+
+    <div class="info-chip">
+
+        KHÔNG GIAN ĐỊA ĐẠO
+
+    </div>
+
+    <h2 id="infoTitle"></h2>
+
+    <p id="infoDescription"></p>
+
+    <h4>
+        Chi tiết quan sát
+    </h4>
+
+    <ul id="infoDetails"></ul>
+
+    <div
+        id="infoNote"
+        class="info-note">
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<script
+src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js">
+</script>
+
+
+<script
+src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js">
+</script>
+
+
+
+<script>
+
+/* =========================================================
+   01. KHỞI TẠO
+========================================================= */
+
+const container =
+    document.getElementById(
+        "scene3d"
+    );
+
+
+if(
+    typeof THREE ===
+    "undefined"
+){
+
+    container.innerHTML = `
+
+        <div style="
+            height:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            padding:30px;
+            background:#d8ded6;
+            color:#24384a;
+            font-family:Arial,sans-serif;
+        ">
+
+            Không tải được mô hình 3D.
+            <br><br>
+            Hãy kiểm tra kết nối Internet
+            và tải lại trang.
+
+        </div>
+
+    `;
+
+    throw new Error(
+        "Three.js chưa tải."
+    );
+
+}
+
+
+
+/* =========================================================
+   02. SCENE
+========================================================= */
+
+const scene =
+    new THREE.Scene();
+
+
+scene.background =
+    new THREE.Color(
+        0xd8ded6
+    );
+
+
+scene.fog =
+    new THREE.Fog(
+        0xd8ded6,
+        65,
+        135
+    );
+
+
+
+/* =========================================================
+   03. CAMERA
+========================================================= */
+
+const camera =
+    new THREE.PerspectiveCamera(
+
+        46,
+
+        container.clientWidth /
+        container.clientHeight,
+
+        .1,
+
+        1000
+
+    );
+
+
+camera.position.set(
+    37,
+    23,
+    39
+);
+
+
+
+/* =========================================================
+   04. RENDERER
+========================================================= */
+
+const renderer =
+    new THREE.WebGLRenderer({
+
+        antialias:true,
+
+        alpha:false,
+
+        powerPreference:
+            "high-performance"
+
+    });
+
+
+renderer.setPixelRatio(
+
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
+
+);
+
+
+renderer.setSize(
+
+    container.clientWidth,
+
+    container.clientHeight
+
+);
+
+
+renderer.setClearColor(
+    0xd8ded6,
+    1
+);
+
+
+renderer.shadowMap.enabled =
+    true;
+
+
+renderer.shadowMap.type =
+    THREE.PCFSoftShadowMap;
+
+
+renderer.outputEncoding =
+    THREE.sRGBEncoding;
+
+
+container.appendChild(
+    renderer.domElement
+);
+
+
+
+/* =========================================================
+   05. CONTROLS
+========================================================= */
+
+const controls =
+    new THREE.OrbitControls(
+
+        camera,
+
+        renderer.domElement
+
+    );
+
+
+controls.enableDamping =
+    true;
+
+
+controls.dampingFactor =
+    .055;
+
+
+controls.minDistance =
+    8;
+
+
+controls.maxDistance =
+    90;
+
+
+controls.maxPolarAngle =
+    Math.PI * .91;
+
+
+controls.target.set(
+    0,
+    -5,
+    0
+);
+
+
+
+/* =========================================================
+   06. ÁNH SÁNG CHUNG
+========================================================= */
+
+scene.add(
+
+    new THREE.AmbientLight(
+
+        0x7f5a42,
+
+        .34
+
+    )
+
+);
+
+
+scene.add(
+
+    new THREE.HemisphereLight(
+
+        0xf6e4c8,
+
+        0x2e170f,
+
+        .82
+
+    )
+
+);
+
+
+const sunlight =
+    new THREE.DirectionalLight(
+
+        0xffd6a3,
+
+        .72
+
+    );
+
+
+sunlight.position.set(
+    26,
+    34,
+    18
+);
+
+
+sunlight.castShadow =
+    true;
+
+
+sunlight.shadow.mapSize.width =
+    2048;
+
+
+sunlight.shadow.mapSize.height =
+    2048;
+
+
+scene.add(
+    sunlight
+);
+
+
+const fillLight =
+    new THREE.DirectionalLight(
+
+        0xffb56a,
+
+        .18
+
+    );
+
+
+fillLight.position.set(
+
+    -16,
+    10,
+    -18
+
+);
+
+
+scene.add(
+    fillLight
+);
+
+
+
+/* =========================================================
+   07. VẬT LIỆU
+========================================================= */
+
+function material(
+    color,
+    roughness=.9
+){
+
+    return new THREE.MeshStandardMaterial({
+
+        color:color,
+
+        roughness:roughness
+
+    });
+
+}
+
+
+/* xanh đậm bề mặt */
+
+const grassMat =
+    material(
+        0x4b5f2d,
+        1
+    );
+
+
+/* nâu đất mặt cắt */
+
+const soilMat =
+    material(
+        0x5a2d1d,
+        .99
+    );
+
+
+/* đất sâu */
+
+const darkSoilMat =
+    material(
+        0x2d160f,
+        1
+    );
+
+
+/* đường địa đạo */
+
+const tunnelMat =
+    material(
+        0x6d3d27,
+        .98
+    );
+
+
+const woodMat =
+    material(
+        0x65442e,
+        .95
+    );
+
+
+const darkWoodMat =
+    material(
+        0x392218,
+        .98
+    );
+
+
+const clothMat =
+    material(
+        0x6f5b49,
+        .98
+    );
+
+
+const metalMat =
+    new THREE.MeshStandardMaterial({
+
+        color:
+            0x666b6d,
+
+        roughness:
+            .58,
+
+        metalness:
+            .2
+
+    });
+
+
+
+/* =========================================================
+   08. HÌNH HỌC
+========================================================= */
+
+function box(
+    width,
+    height,
+    depth,
+    mat
+){
+
+    const mesh =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                width,
+                height,
+                depth
+            ),
+
+            mat
+
+        );
+
+
+    mesh.castShadow =
+        true;
+
+
+    mesh.receiveShadow =
+        true;
+
+
+    return mesh;
+
+}
+
+
+
+function cylinder(
+    radiusTop,
+    radiusBottom,
+    height,
+    mat,
+    segments=14
+){
+
+    const mesh =
+        new THREE.Mesh(
+
+            new THREE.CylinderGeometry(
+
+                radiusTop,
+                radiusBottom,
+                height,
+                segments
+
+            ),
+
+            mat
+
+        );
+
+
+    mesh.castShadow =
+        true;
+
+
+    mesh.receiveShadow =
+        true;
+
+
+    return mesh;
+
+}
+
+
+
+/* =========================================================
+   09. ĐÈN DẦU
+========================================================= */
+
+function addLantern(
+    group,
+    x,
+    y,
+    z
+){
+
+    const body =
+        cylinder(
+
+            .09,
+            .11,
+            .3,
+            metalMat,
+            10
+
+        );
+
+
+    body.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    group.add(
+        body
+    );
+
+
+    const flame =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .085,
+                12,
+                12
+            ),
+
+            new THREE.MeshStandardMaterial({
+
+                color:
+                    0xffe0a6,
+
+                emissive:
+                    0xff9a2f,
+
+                emissiveIntensity:
+                    1.7
+
+            })
+
+        );
+
+
+    flame.position.set(
+        x,
+        y-.02,
+        z
+    );
+
+
+    group.add(
+        flame
+    );
+
+
+    const halo =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .16,
+                12,
+                12
+            ),
+
+            new THREE.MeshBasicMaterial({
+
+                color:
+                    0xffc97c,
+
+                transparent:
+                    true,
+
+                opacity:
+                    .18
+
+            })
+
+        );
+
+
+    halo.position.set(
+        x,
+        y-.02,
+        z
+    );
+
+
+    group.add(
+        halo
+    );
+
+
+    const light =
+        new THREE.PointLight(
+
+            0xffb24a,
+
+            1.95,
+
+            12,
+
+            1.8
+
+        );
+
+
+    light.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    group.add(
+        light
+    );
+
+}
+
+
+
+/* =========================================================
+   10. ĐÈN DỌC ĐƯỜNG HẦM
+========================================================= */
+
+function addTunnelLamp(
+    x,
+    y,
+    z
+){
+
+    const lamp =
+        cylinder(
+            .06,
+            .06,
+            .18,
+            metalMat,
+            10
+        );
+
+
+    lamp.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    scene.add(
+        lamp
+    );
+
+
+    const glow =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .07,
+                10,
+                10
+            ),
+
+            new THREE.MeshStandardMaterial({
+
+                color:
+                    0xffdeaa,
+
+                emissive:
+                    0xffa03a,
+
+                emissiveIntensity:
+                    1.45
+
+            })
+
+        );
+
+
+    glow.position.set(
+        x,
+        y-.03,
+        z
+    );
+
+
+    scene.add(
+        glow
+    );
+
+
+    const light =
+        new THREE.PointLight(
+
+            0xffb04c,
+
+            1.4,
+
+            8,
+
+            1.9
+
+        );
+
+
+    light.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    scene.add(
+        light
+    );
+
+}
+
+
+
+/* =========================================================
+   11. NHÂN VẬT
+========================================================= */
+
+function addPerson(
+    group,
+    x,
+    y,
+    z,
+    scale=1,
+    pose="stand",
+    shirtColor=0x55684a
+){
+
+    const person =
+        new THREE.Group();
+
+
+    const skin =
+        material(
+            0xc29570,
+            .96
+        );
+
+
+    const shirt =
+        material(
+            shirtColor,
+            .96
+        );
+
+
+    const pants =
+        material(
+            0x3b4336,
+            .97
+        );
+
+
+    const hatMat =
+        material(
+            0x515e40,
+            .98
+        );
+
+
+    const body =
+        cylinder(
+
+            .16*scale,
+            .20*scale,
+            .48*scale,
+            shirt,
+            10
+
+        );
+
+
+    body.position.y =
+        .55*scale;
+
+
+    person.add(
+        body
+    );
+
+
+    const head =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .145*scale,
+                12,
+                12
+            ),
+
+            skin
+
+        );
+
+
+    head.position.y =
+        .92*scale;
+
+
+    head.castShadow =
+        true;
+
+
+    person.add(
+        head
+    );
+
+
+    const hat =
+        cylinder(
+
+            .17*scale,
+            .2*scale,
+            .065*scale,
+            hatMat,
+            12
+
+        );
+
+
+    hat.position.y =
+        1.045*scale;
+
+
+    person.add(
+        hat
+    );
+
+
+    const leg1 =
+        cylinder(
+
+            .05*scale,
+            .06*scale,
+            .42*scale,
+            pants,
+            8
+
+        );
+
+
+    leg1.position.set(
+        -.085*scale,
+        .13*scale,
+        0
+    );
+
+
+    person.add(
+        leg1
+    );
+
+
+    const leg2 =
+        leg1.clone();
+
+
+    leg2.position.x =
+        .085*scale;
+
+
+    person.add(
+        leg2
+    );
+
+
+    const arm1 =
+        cylinder(
+
+            .04*scale,
+            .045*scale,
+            .37*scale,
+            skin,
+            8
+
+        );
+
+
+    arm1.position.set(
+        -.22*scale,
+        .56*scale,
+        0
+    );
+
+
+    arm1.rotation.z =
+        -.30;
+
+
+    person.add(
+        arm1
+    );
+
+
+    const arm2 =
+        arm1.clone();
+
+
+    arm2.position.x =
+        .22*scale;
+
+
+    arm2.rotation.z =
+        .30;
+
+
+    person.add(
+        arm2
+    );
+
+
+    if(
+        pose ===
+        "sit"
+    ){
+
+        body.position.y =
+            .43*scale;
+
+
+        head.position.y =
+            .79*scale;
+
+
+        hat.position.y =
+            .91*scale;
+
+
+        leg1.rotation.x =
+            Math.PI/2;
+
+
+        leg1.position.set(
+            -.09*scale,
+            .06*scale,
+            .17*scale
+        );
+
+
+        leg2.rotation.x =
+            Math.PI/2;
+
+
+        leg2.position.set(
+            .09*scale,
+            .06*scale,
+            .17*scale
+        );
+
+    }
+
+
+    if(
+        pose ===
+        "crouch"
+    ){
+
+        person.rotation.x =
+            -.18;
+
+
+        body.position.y =
+            .40*scale;
+
+
+        head.position.y =
+            .72*scale;
+
+
+        hat.position.y =
+            .84*scale;
+
+
+        leg1.rotation.z =
+            .55;
+
+
+        leg2.rotation.z =
+            -.55;
+
+    }
+
+
+    if(
+        pose ===
+        "sleep"
+    ){
+
+        person.rotation.z =
+            Math.PI/2;
+
+
+        person.scale
+            .setScalar(
+                .85
+            );
+
+    }
+
+
+    person.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    group.add(
+        person
+    );
+
+
+    return person;
+
+}
+
+
+
+/* =========================================================
+   12. NỘI THẤT
+========================================================= */
+
+function addTable(
+    group,
+    x,
+    y,
+    z,
+    w=2,
+    d=1,
+    h=.8
+){
+
+    const top =
+        box(
+            w,
+            .12,
+            d,
+            woodMat
+        );
+
+
+    top.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    group.add(
+        top
+    );
+
+
+    [
+        [-1,-1],
+        [1,-1],
+        [-1,1],
+        [1,1]
+
+    ].forEach(
+
+        p => {
+
+            const leg =
+                box(
+                    .09,
+                    h,
+                    .09,
+                    darkWoodMat
+                );
+
+
+            leg.position.set(
+
+                x+
+                p[0]*
+                (
+                    w/2-.12
+                ),
+
+                y-h/2,
+
+                z+
+                p[1]*
+                (
+                    d/2-.12
+                )
+
+            );
+
+
+            group.add(
+                leg
+            );
+
+        }
+
+    );
+
+}
+
+
+
+function addBench(
+    group,
+    x,
+    y,
+    z,
+    width=1.8
+){
+
+    const seat =
+        box(
+            width,
+            .12,
+            .4,
+            woodMat
+        );
+
+
+    seat.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    group.add(
+        seat
+    );
+
+
+    const legA =
+        box(
+            .09,
+            .5,
+            .09,
+            darkWoodMat
+        );
+
+
+    legA.position.set(
+        x-width/2+.15,
+        y-.3,
+        z
+    );
+
+
+    group.add(
+        legA
+    );
+
+
+    const legB =
+        legA.clone();
+
+
+    legB.position.x =
+        x+width/2-.15;
+
+
+    group.add(
+        legB
+    );
+
+}
+
+
+
+function addBed(
+    group,
+    x,
+    y,
+    z,
+    scale=1
+){
+
+    const frame =
+        box(
+            2*scale,
+            .13*scale,
+            .9*scale,
+            woodMat
+        );
+
+
+    frame.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    group.add(
+        frame
+    );
+
+
+    const mattress =
+        box(
+
+            1.85*scale,
+            .12*scale,
+            .78*scale,
+
+            material(
+                0x76634c,
+                .98
+            )
+
+        );
+
+
+    mattress.position.set(
+        x,
+        y+.11*scale,
+        z
+    );
+
+
+    group.add(
+        mattress
+    );
+
+
+    const pillow =
+        box(
+
+            .4*scale,
+            .1*scale,
+            .24*scale,
+
+            material(
+                0xcbbb9f,
+                .98
+            )
+
+        );
+
+
+    pillow.position.set(
+        x-.65*scale,
+        y+.18*scale,
+        z
+    );
+
+
+    group.add(
+        pillow
+    );
+
+}
+
+
+
+function addCrate(
+    group,
+    x,
+    y,
+    z,
+    scale=1
+){
+
+    const crate =
+        box(
+            1*scale,
+            .75*scale,
+            .75*scale,
+            woodMat
+        );
+
+
+    crate.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    group.add(
+        crate
+    );
+
+
+    const stripe =
+        box(
+
+            1.02*scale,
+            .055*scale,
+            .055*scale,
+
+            darkWoodMat
+
+        );
+
+
+    stripe.position.set(
+        x,
+        y+.15*scale,
+        z+.34*scale
+    );
+
+
+    group.add(
+        stripe
+    );
+
+
+    const stripe2 =
+        stripe.clone();
+
+
+    stripe2.position.z =
+        z-.34*scale;
+
+
+    group.add(
+        stripe2
+    );
+
+}
+
+
+
+function addSack(
+    group,
+    x,
+    y,
+    z,
+    scale=1
+){
+
+    const sack =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .4*scale,
+                12,
+                12
+            ),
+
+            clothMat
+
+        );
+
+
+    sack.scale.set(
+        .8,
+        1.12,
+        .7
+    );
+
+
+    sack.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    sack.castShadow =
+        true;
+
+
+    group.add(
+        sack
+    );
+
+}
+
+
+
+function addShelf(
+    group,
+    x,
+    y,
+    z,
+    width=1.5
+){
+
+    const sideA =
+        box(
+            .07,
+            1.7,
+            .35,
+            darkWoodMat
+        );
+
+
+    sideA.position.set(
+        x-width/2,
+        y,
+        z
+    );
+
+
+    group.add(
+        sideA
+    );
+
+
+    const sideB =
+        sideA.clone();
+
+
+    sideB.position.x =
+        x+width/2;
+
+
+    group.add(
+        sideB
+    );
+
+
+    [-.6,0,.6]
+    .forEach(
+
+        offset => {
+
+            const shelf =
+                box(
+                    width,
+                    .07,
+                    .35,
+                    woodMat
+                );
+
+
+            shelf.position.set(
+                x,
+                y+offset,
+                z
+            );
+
+
+            group.add(
+                shelf
+            );
+
+        }
+
+    );
+
+}
+
+
+
+function addWallMap(
+    group,
+    x,
+    y,
+    z
+){
+
+    const map =
+        new THREE.Mesh(
+
+            new THREE.PlaneGeometry(
+                1.9,
+                1.15
+            ),
+
+            new THREE.MeshStandardMaterial({
+
+                color:
+                    0xcbb28b,
+
+                roughness:
+                    1,
+
+                side:
+                    THREE.DoubleSide
+
+            })
+
+        );
+
+
+    map.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    group.add(
+        map
+    );
+
+}
+
+
+
+function addMedicalBox(
+    group,
+    x,
+    y,
+    z
+){
+
+    const body =
+        box(
+
+            .8,
+            .48,
+            .55,
+
+            material(
+                0x687066,
+                .9
+            )
+
+        );
+
+
+    body.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    group.add(
+        body
+    );
+
+
+    const red =
+        material(
+            0xa33a32,
+            .8
+        );
+
+
+    const horizontal =
+        box(
+            .3,
+            .045,
+            .045,
+            red
+        );
+
+
+    horizontal.position.set(
+        x,
+        y+.22,
+        z+.285
+    );
+
+
+    group.add(
+        horizontal
+    );
+
+
+    const vertical =
+        box(
+            .045,
+            .3,
+            .045,
+            red
+        );
+
+
+    vertical.position.set(
+        x,
+        y+.22,
+        z+.285
+    );
+
+
+    group.add(
+        vertical
+    );
+
+}
+
+
+
+function addEquipmentRack(
+    group,
+    x,
+    y,
+    z
+){
+
+    const rack =
+        box(
+            1.8,
+            .08,
+            .15,
+            darkWoodMat
+        );
+
+
+    rack.position.set(
+        x,
+        y+.8,
+        z
+    );
+
+
+    group.add(
+        rack
+    );
+
+
+    for(
+        let i=0;
+        i<4;
+        i++
+    ){
+
+        const px =
+            x-.48+
+            i*.32;
+
+
+        const longPart =
+            box(
+                .045,
+                .82,
+                .045,
+                metalMat
+            );
+
+
+        longPart.position.set(
+            px,
+            y+.3,
+            z
+        );
+
+
+        longPart.rotation.z =
+            .08;
+
+
+        group.add(
+            longPart
+        );
+
+
+        const woodenPart =
+            box(
+                .08,
+                .3,
+                .07,
+                woodMat
+            );
+
+
+        woodenPart.position.set(
+            px-.03,
+            y-.12,
+            z
+        );
+
+
+        woodenPart.rotation.z =
+            .22;
+
+
+        group.add(
+            woodenPart
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   13. KHỐI ĐẤT
+========================================================= */
+
+function createEarth(){
+
+    const bottom =
+        box(
+            56,
+            1.5,
+            36,
+            darkSoilMat
+        );
+
+
+    bottom.position.set(
+        0,
+        -16.5,
+        0
+    );
+
+
+    scene.add(
+        bottom
+    );
+
+
+    const back =
+        box(
+            56,
+            17,
+            1.5,
+            soilMat
+        );
+
+
+    back.position.set(
+        0,
+        -7.6,
+        -17.2
+    );
+
+
+    scene.add(
+        back
+    );
+
+
+    const left =
+        box(
+            1.5,
+            17,
+            36,
+            soilMat
+        );
+
+
+    left.position.set(
+        -27.2,
+        -7.6,
+        0
+    );
+
+
+    scene.add(
+        left
+    );
+
+
+    const surface =
+        box(
+            56,
+            2.1,
+            36,
+            grassMat
+        );
+
+
+    surface.position.set(
+        0,
+        .7,
+        0
+    );
+
+
+    scene.add(
+        surface
+    );
+
+}
+
+
+createEarth();
+
+
+
+/* =========================================================
+   14. CÂY CỐI
+========================================================= */
+
+function addBush(
+    x,
+    z,
+    scale=1
+){
+
+    const group =
+        new THREE.Group();
+
+
+    const greens = [
+
+        0x17391d,
+        0x214a24,
+        0x2b5729,
+        0x345e30,
+        0x244521
+
+    ];
+
+
+    for(
+        let i=0;
+        i<5;
+        i++
+    ){
+
+        const leaf =
+            new THREE.Mesh(
+
+                new THREE.SphereGeometry(
+                    .45*scale,
+                    8,
+                    8
+                ),
+
+                material(
+
+                    greens[
+                        Math.floor(
+                            Math.random()*
+                            greens.length
+                        )
+                    ],
+
+                    1
+
+                )
+
+            );
+
+
+        leaf.position.set(
+
+            (
+                Math.random()-.5
+            )*
+            .7*
+            scale,
+
+            .35*scale+
+            Math.random()*
+            .3*
+            scale,
+
+            (
+                Math.random()-.5
+            )*
+            .7*
+            scale
+
+        );
+
+
+        leaf.castShadow =
+            true;
+
+
+        group.add(
+            leaf
+        );
+
+    }
+
+
+    group.position.set(
+        x,
+        1.85,
+        z
+    );
+
+
+    scene.add(
+        group
+    );
+
+}
+
+
+
+function addPalm(
+    x,
+    z,
+    scale=1
+){
+
+    const group =
+        new THREE.Group();
+
+
+    const trunk =
+        cylinder(
+
+            .1*scale,
+            .16*scale,
+            2.7*scale,
+
+            material(
+                0x573824,
+                1
+            ),
+
+            8
+
+        );
+
+
+    trunk.position.y =
+        2.8*scale;
+
+
+    group.add(
+        trunk
+    );
+
+
+    for(
+        let i=0;
+        i<7;
+        i++
+    ){
+
+        const leaf =
+            box(
+
+                .08*scale,
+                .04*scale,
+                1.4*scale,
+
+                material(
+                    0x1f4723,
+                    1
+                )
+
+            );
+
+
+        const angle =
+            i*
+            (
+                Math.PI*2/7
+            );
+
+
+        leaf.position.y =
+            4.15*scale;
+
+
+        leaf.position.x =
+            Math.sin(angle)*
+            .35*
+            scale;
+
+
+        leaf.position.z =
+            Math.cos(angle)*
+            .35*
+            scale;
+
+
+        leaf.rotation.y =
+            angle;
+
+
+        leaf.rotation.x =
+            -.42;
+
+
+        group.add(
+            leaf
+        );
+
+    }
+
+
+    group.position.set(
+        x,
+        1.1,
+        z
+    );
+
+
+    scene.add(
+        group
+    );
+
+}
+
+
+
+/* nhiều bụi cây */
+
+for(
+    let i=0;
+    i<88;
+    i++
+){
+
+    addBush(
+
+        -24+
+        Math.random()*
+        48,
+
+        -14+
+        Math.random()*
+        29,
+
+        .62+
+        Math.random()*
+        .7
+
+    );
+
+}
+
+
+
+/* nhiều cây lớn */
+
+addPalm(-20,-9,1.02);
+addPalm(-18,-7,1);
+addPalm(-15,3,.92);
+addPalm(-12,6,.95);
+addPalm(-10,10,.9);
+addPalm(-7,-11,.84);
+addPalm(-4,5,.82);
+addPalm(-2,-9,.88);
+addPalm(2,11,.82);
+addPalm(5,-11,.82);
+addPalm(7,4,.86);
+addPalm(10,7,.9);
+addPalm(13,-8,.84);
+addPalm(15,9,.94);
+addPalm(18,1,.9);
+addPalm(20,7,.84);
+addPalm(21,-3,.86);
+addPalm(23,8,.8);
+addPalm(24,-8,.82);
+
+
+/* bụi cây lớn cố định */
+
+addBush(-16,-10,1.25);
+addBush(-13,-8,1.15);
+addBush(-8,8,1.25);
+addBush(-4,-6,1.15);
+addBush(0,10,1.2);
+addBush(4,-10,1.25);
+addBush(9,9,1.2);
+addBush(14,-6,1.15);
+addBush(18,6,1.25);
+addBush(22,2,1.15);
+
+
+
+/* =========================================================
+   15. NHÀ TRÊN MẶT ĐẤT
+========================================================= */
+
+function createSurfaceHut(
+    x,
+    z
+){
+
+    const group =
+        new THREE.Group();
+
+
+    const floor =
+        box(
+            3.5,
+            .16,
+            2.8,
+            woodMat
+        );
+
+
+    floor.position.y =
+        1.83;
+
+
+    group.add(
+        floor
+    );
+
+
+    const back =
+        box(
+
+            3.5,
+            1.5,
+            .12,
+
+            material(
+                0x806843,
+                1
+            )
+
+        );
+
+
+    back.position.set(
+        0,
+        2.65,
+        -1.3
+    );
+
+
+    group.add(
+        back
+    );
+
+
+    const left =
+        box(
+
+            .12,
+            1.5,
+            2.8,
+
+            material(
+                0x806843,
+                1
+            )
+
+        );
+
+
+    left.position.set(
+        -1.7,
+        2.65,
+        0
+    );
+
+
+    group.add(
+        left
+    );
+
+
+    const roofA =
+        box(
+
+            3.8,
+            .1,
+            1.75,
+
+            material(
+                0x78613b,
+                1
+            )
+
+        );
+
+
+    roofA.position.set(
+        0,
+        3.65,
+        -.42
+    );
+
+
+    roofA.rotation.x =
+        .46;
+
+
+    group.add(
+        roofA
+    );
+
+
+    const roofB =
+        roofA.clone();
+
+
+    roofB.position.z =
+        .42;
+
+
+    roofB.rotation.x =
+        -.46;
+
+
+    group.add(
+        roofB
+    );
+
+
+    group.position.set(
+        x,
+        0,
+        z
+    );
+
+
+    scene.add(
+        group
+    );
+
+}
+
+
+createSurfaceHut(
+    -7,
+    -10
+);
+
+
+
+/* =========================================================
+   16. CHÒI QUAN SÁT
+========================================================= */
+
+function createWatchTower(
+    x,
+    z
+){
+
+    const group =
+        new THREE.Group();
+
+
+    [
+        [-.55,-.55],
+        [.55,-.55],
+        [-.55,.55],
+        [.55,.55]
+
+    ].forEach(
+
+        p => {
+
+            const leg =
+                box(
+                    .1,
+                    3.6,
+                    .1,
+                    darkWoodMat
+                );
+
+
+            leg.position.set(
+                p[0],
+                3,
+                p[1]
+            );
+
+
+            group.add(
+                leg
+            );
+
+        }
+
+    );
+
+
+    const platform =
+        box(
+            1.7,
+            .12,
+            1.7,
+            woodMat
+        );
+
+
+    platform.position.y =
+        4.75;
+
+
+    group.add(
+        platform
+    );
+
+
+    const roof =
+        box(
+
+            2.1,
+            .1,
+            2.1,
+
+            material(
+                0x745b35,
+                1
+            )
+
+        );
+
+
+    roof.position.y =
+        5.65;
+
+
+    group.add(
+        roof
+    );
+
+
+    group.position.set(
+        x,
+        1,
+        z
+    );
+
+
+    scene.add(
+        group
+    );
+
+}
+
+
+createWatchTower(
+    16,
+    -4
+);
+
+
+
+/* =========================================================
+   17. NGƯỜI TRÊN MẶT ĐẤT
+========================================================= */
+
+const surfacePeople =
+    new THREE.Group();
+
+
+addPerson(
+    surfacePeople,
+    -3,
+    1.8,
+    -3,
+    .85,
+    "stand",
+    0x4b5d42
+);
+
+
+addPerson(
+    surfacePeople,
+    3,
+    1.8,
+    0,
+    .82,
+    "stand",
+    0x5b6849
+);
+
+
+scene.add(
+    surfacePeople
+);
+
+
+
+/* =========================================================
+   18. BIẾN TƯƠNG TÁC
+========================================================= */
+
+const clickableObjects = [];
+
+const markers = [];
+
+const focusTargets = {};
+
+const smokeParticles = [];
+
+
+
+/* =========================================================
+   19. MARKER
+========================================================= */
+
+function addMarker(
+    x,
+    y,
+    z,
+    data
+){
+
+    const marker =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .34,
+                15,
+                15
+            ),
+
+            new THREE.MeshStandardMaterial({
+
+                color:
+                    0xc64439,
+
+                emissive:
+                    0x54110f,
+
+                emissiveIntensity:
+                    .42
+
+            })
+
+        );
+
+
+    marker.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    marker.userData =
+        data;
+
+
+    scene.add(
+        marker
+    );
+
+
+    clickableObjects.push(
+        marker
+    );
+
+
+    markers.push(
+        marker
+    );
+
+}
+
+
+
+/* =========================================================
+   20. ĐƯỜNG HẦM
+========================================================= */
+
+function createTunnel(
+    points,
+    radius=.65
+){
+
+    const curve =
+        new THREE.CatmullRomCurve3(
+            points
+        );
+
+
+    const geometry =
+        new THREE.TubeGeometry(
+
+            curve,
+
+            48,
+
+            radius,
+
+            16,
+
+            false
+
+        );
+
+
+    const tunnel =
+        new THREE.Mesh(
+
+            geometry,
+
+            tunnelMat
+
+        );
+
+
+    tunnel.castShadow =
+        true;
+
+
+    tunnel.receiveShadow =
+        true;
+
+
+    scene.add(
+        tunnel
+    );
+
+
+    return tunnel;
+
+}
+
+
+
+function createShaft(
+    x,
+    y1,
+    y2,
+    z,
+    radius=.5
+){
+
+    const shaft =
+        cylinder(
+
+            radius,
+            radius,
+
+            Math.abs(
+                y2-y1
+            ),
+
+            tunnelMat,
+
+            16
+
+        );
+
+
+    shaft.position.set(
+
+        x,
+
+        (
+            y1+y2
+        )/2,
+
+        z
+
+    );
+
+
+    scene.add(
+        shaft
+    );
+
+
+    return shaft;
+
+}
+
+
+
+/* =========================================================
+   21. HỆ THỐNG HẦM
+========================================================= */
+
+createTunnel([
+
+    new THREE.Vector3(
+        -18,-3.5,2
+    ),
+
+    new THREE.Vector3(
+        -8,-3.5,2
+    ),
+
+    new THREE.Vector3(
+        2,-3.5,2
+    ),
+
+    new THREE.Vector3(
+        11,-3.5,2
+    ),
+
+    new THREE.Vector3(
+        19,-3.5,2
+    )
+
+],.7);
+
+
+
+createTunnel([
+
+    new THREE.Vector3(
+        -8,-3.5,2
+    ),
+
+    new THREE.Vector3(
+        -8,-3.5,-9
+    )
+
+],.58);
+
+
+
+createTunnel([
+
+    new THREE.Vector3(
+        13,-3.5,2
+    ),
+
+    new THREE.Vector3(
+        13,-3.5,10
+    )
+
+],.58);
+
+
+
+createShaft(
+    -2,
+    -3.5,
+    -8,
+    2,
+    .5
+);
+
+
+
+createTunnel([
+
+    new THREE.Vector3(
+        -14,-8,2
+    ),
+
+    new THREE.Vector3(
+        -4,-8,2
+    ),
+
+    new THREE.Vector3(
+        6,-8,2
+    ),
+
+    new THREE.Vector3(
+        13,-8,2
+    )
+
+],.65);
+
+
+
+createTunnel([
+
+    new THREE.Vector3(
+        -11,-8,2
+    ),
+
+    new THREE.Vector3(
+        -11,-8,10
+    )
+
+],.55);
+
+
+
+createTunnel([
+
+    new THREE.Vector3(
+        4,-8,2
+    ),
+
+    new THREE.Vector3(
+        4,-8,-9
+    )
+
+],.55);
+
+
+
+createShaft(
+    8,
+    -8,
+    -12,
+    2,
+    .46
+);
+
+
+
+createTunnel([
+
+    new THREE.Vector3(
+        -7,-12,2
+    ),
+
+    new THREE.Vector3(
+        4,-12,2
+    ),
+
+    new THREE.Vector3(
+        13,-12,2
+    )
+
+],.56);
+
+
+
+/* =========================================================
+   22. ĐÈN DỌC ĐƯỜNG HẦM
+========================================================= */
+
+[
+    [-15,-3.1,2],
+    [-6,-3.1,2],
+    [4,-3.1,2],
+    [14,-3.1,2],
+
+    [-8,-3.1,-5],
+    [13,-3.1,7],
+
+    [-11,-7.6,2],
+    [-1,-7.6,2],
+    [9,-7.6,2],
+
+    [4,-7.6,-6],
+    [-11,-7.6,9],
+
+    [-4,-11.6,2],
+    [8,-11.6,2]
+
+].forEach(
+
+    pos => {
+
+        addTunnelLamp(
+            pos[0],
+            pos[1],
+            pos[2]
+        );
+
+    }
+
+);
+
+
+
+/* =========================================================
+   23. CỬA HẦM
+========================================================= */
+
+const entranceData = {
+
+    icon:
+        "🚪",
+
+    title:
+        "Cửa ra vào địa đạo",
+
+    description:
+        "Lối xuống nối không gian trên mặt đất với hệ thống đường hầm bên dưới.",
+
+    details:[
+
+        "Quan sát nắp hầm trên mặt đất.",
+
+        "Theo dõi trục xuống nối với đường hầm tầng trên.",
+
+        "Nhận biết mối liên hệ giữa mặt đất và hệ thống địa đạo."
+
+    ],
+
+    note:
+        "Mô hình mang tính trực quan giáo dục, không phải bản vẽ kỹ thuật của toàn bộ hệ thống địa đạo."
+
+};
+
+
+const entrance =
+    box(
+        2.6,
+        .25,
+        1.6,
+        darkWoodMat
+    );
+
+
+entrance.position.set(
+    -18,
+    1.5,
+    2
+);
+
+
+entrance.rotation.y =
+    .12;
+
+
+entrance.userData =
+    entranceData;
+
+
+scene.add(
+    entrance
+);
+
+
+clickableObjects.push(
+    entrance
+);
+
+
+createShaft(
+    -18,
+    1,
+    -3.5,
+    2,
+    .5
+);
+
+
+addMarker(
+    -18,
+    2.2,
+    2,
+    entranceData
+);
+
+
+focusTargets.entrance = {
+
+    position:
+        new THREE.Vector3(
+            -14,
+            7,
+            9
+        ),
+
+    target:
+        new THREE.Vector3(
+            -18,
+            0,
+            2
+        )
+
+};
+
+
+
+/* =========================================================
+   24. HÀM TẠO PHÒNG
+========================================================= */
+
+function createRoom(
+    config
+){
+
+    const group =
+        new THREE.Group();
+
+
+    group.position.set(
+        config.x,
+        config.y,
+        config.z
+    );
+
+
+    const wallMaterial =
+        material(
+
+            config.wallColor ||
+            0x6a3a27,
+
+            .99
+
+        );
+
+
+    const floor =
+        box(
+
+            config.w,
+            .17,
+            config.d,
+
+            material(
+                0x341d15,
+                .99
+            )
+
+        );
+
+
+    floor.position.y =
+        -config.h/2;
+
+
+    group.add(
+        floor
+    );
+
+
+    const back =
+        box(
+            config.w,
+            config.h,
+            .17,
+            wallMaterial
+        );
+
+
+    back.position.set(
+        0,
+        0,
+        -config.d/2
+    );
+
+
+    group.add(
+        back
+    );
+
+
+    const left =
+        box(
+            .17,
+            config.h,
+            config.d,
+            wallMaterial
+        );
+
+
+    left.position.set(
+        -config.w/2,
+        0,
+        0
+    );
+
+
+    group.add(
+        left
+    );
+
+
+    const right =
+        left.clone();
+
+
+    right.position.x =
+        config.w/2;
+
+
+    group.add(
+        right
+    );
+
+
+    const roof =
+        box(
+
+            config.w,
+            .17,
+            config.d,
+
+            material(
+                0x281611,
+                .99
+            )
+
+        );
+
+
+    roof.position.y =
+        config.h/2;
+
+
+    group.add(
+        roof
+    );
+
+
+    const topBeam =
+        box(
+            config.w,
+            .1,
+            .1,
+            darkWoodMat
+        );
+
+
+    topBeam.position.set(
+        0,
+        config.h/2-.12,
+        config.d/2
+    );
+
+
+    group.add(
+        topBeam
+    );
+
+
+    if(
+        typeof
+        config.decorate ===
+        "function"
+    ){
+
+        config.decorate(
+            group
+        );
+
+    }
+
+
+    addLantern(
+        group,
+        0,
+        config.h/2-.42,
+        .1
+    );
+
+
+    scene.add(
+        group
+    );
+
+
+    const clickBox =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                config.w,
+                config.h,
+                config.d
+            ),
+
+            new THREE.MeshBasicMaterial({
+                transparent:true,
+                opacity:0
+            })
+
+        );
+
+
+    clickBox.position.set(
+        config.x,
+        config.y,
+        config.z
+    );
+
+
+    clickBox.userData =
+        config.data;
+
+
+    scene.add(
+        clickBox
+    );
+
+
+    clickableObjects.push(
+        clickBox
+    );
+
+
+    addMarker(
+
+        config.x,
+
+        config.y+
+        config.h/2+
+        .65,
+
+        config.z+
+        config.d/2-
+        .3,
+
+        config.data
+
+    );
+
+
+    focusTargets[
+        config.key
+    ] = {
+
+        position:
+            new THREE.Vector3(
+
+                config.x+
+                config.camera[0],
+
+                config.y+
+                config.camera[1],
+
+                config.z+
+                config.camera[2]
+
+            ),
+
+        target:
+            new THREE.Vector3(
+                config.x,
+                config.y,
+                config.z
+            )
+
+    };
+
+}
+
+
+
+/* =========================================================
+   25. KHÓI BẾP MỎNG
+========================================================= */
+
+function addSmoke(
+    group,
+    x,
+    y,
+    z
+){
+
+    for(
+        let i=0;
+        i<24;
+        i++
+    ){
+
+        const smokeMaterial =
+            new THREE.MeshStandardMaterial({
+
+                color:
+                    0xc9c2b9,
+
+                transparent:
+                    true,
+
+                opacity:
+                    .05+
+                    Math.random()*
+                    .06,
+
+                roughness:
+                    1
+
+            });
+
+
+        const smoke =
+            new THREE.Mesh(
+
+                new THREE.SphereGeometry(
+
+                    .055+
+                    Math.random()*
+                    .055,
+
+                    8,
+                    8
+
+                ),
+
+                smokeMaterial
+
+            );
+
+
+        smoke.position.set(
+
+            x+
+            (
+                Math.random()-.5
+            )*
+            .14,
+
+            y+
+            Math.random()*
+            .65,
+
+            z+
+            (
+                Math.random()-.5
+            )*
+            .14
+
+        );
+
+
+        smoke.userData = {
+
+            baseX:
+                smoke.position.x,
+
+            baseY:
+                smoke.position.y,
+
+            baseZ:
+                smoke.position.z,
+
+            speed:
+                .07+
+                Math.random()*
+                .07,
+
+            phase:
+                Math.random()*
+                Math.PI*
+                2
+
+        };
+
+
+        group.add(
+            smoke
+        );
+
+
+        smokeParticles.push(
+            smoke
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   26. BẾP HOÀNG CẦM
+========================================================= */
+
+createRoom({
+
+    key:
+        "kitchen",
+
+    x:
+        13,
+
+    y:
+        -3.5,
+
+    z:
+        11,
+
+    w:
+        6.2,
+
+    h:
+        3.1,
+
+    d:
+        4.6,
+
+    camera:
+        [6.5,2.2,6.4],
+
+    data:{
+
+        icon:
+            "🔥",
+
+        title:
+            "Bếp Hoàng Cầm",
+
+        description:
+            "Không gian bếp được mô phỏng với bệ nấu, nồi, lửa, người phục vụ và làn khói mỏng.",
+
+        details:[
+
+            "Có bệ bếp và dụng cụ nấu ăn.",
+
+            "Có ánh sáng lửa màu vàng cam.",
+
+            "Có người đang thao tác.",
+
+            "Có làn khói mỏng chuyển động."
+
+        ],
+
+        note:
+            "Làn khói được mô phỏng nhẹ để gợi đặc điểm xử lí và phân tán khói của Bếp Hoàng Cầm."
+
+    },
+
+    decorate:
+
+    group => {
+
+
+        const stove =
+            box(
+
+                2.1,
+                .82,
+                1.1,
+
+                material(
+                    0x4a291d,
+                    .99
+                )
+
+            );
+
+
+        stove.position.set(
+            -1.2,
+            -1.05,
+            .7
+        );
+
+
+        group.add(
+            stove
+        );
+
+
+        const fire =
+            new THREE.Mesh(
+
+                new THREE.ConeGeometry(
+                    .22,
+                    .42,
+                    9
+                ),
+
+                new THREE.MeshStandardMaterial({
+
+                    color:
+                        0xffa03b,
+
+                    emissive:
+                        0xff6200,
+
+                    emissiveIntensity:
+                        1.25
+
+                })
+
+            );
+
+
+        fire.position.set(
+            -1.2,
+            -.35,
+            .25
+        );
+
+
+        group.add(
+            fire
+        );
+
+
+        const fireLight =
+            new THREE.PointLight(
+
+                0xff952e,
+
+                1.85,
+
+                9,
+
+                1.75
+
+            );
+
+
+        fireLight.position.set(
+            -1.2,
+            -.2,
+            .25
+        );
+
+
+        group.add(
+            fireLight
+        );
+
+
+        const pot1 =
+            cylinder(
+                .28,
+                .31,
+                .3,
+                metalMat,
+                14
+            );
+
+
+        pot1.position.set(
+            -1.65,
+            -.38,
+            .72
+        );
+
+
+        group.add(
+            pot1
+        );
+
+
+        const pot2 =
+            cylinder(
+                .23,
+                .27,
+                .26,
+                metalMat,
+                14
+            );
+
+
+        pot2.position.set(
+            -.75,
+            -.39,
+            .75
+        );
+
+
+        group.add(
+            pot2
+        );
+
+
+        addShelf(
+            group,
+            1.7,
+            0,
+            -1.7,
+            1.6
+        );
+
+
+        addCrate(
+            group,
+            1.3,
+            -1.15,
+            .8,
+            .8
+        );
+
+
+        addSack(
+            group,
+            2,
+            -1.13,
+            .8,
+            .75
+        );
+
+
+        addPerson(
+            group,
+            .35,
+            -1.05,
+            .3,
+            .9,
+            "crouch",
+            0x4e6045
+        );
+
+
+        addSmoke(
+            group,
+            -1.2,
+            -.1,
+            .25
+        );
+
+    }
+
+});
+
+
+
+/* =========================================================
+   27. HẦM CHỈ HUY
+========================================================= */
+
+createRoom({
+
+    key:
+        "command",
+
+    x:
+        -8,
+
+    y:
+        -3.5,
+
+    z:
+        -9,
+
+    w:
+        6.6,
+
+    h:
+        3.2,
+
+    d:
+        5,
+
+    camera:
+        [7,2,5.7],
+
+    data:{
+
+        icon:
+            "🗺️",
+
+        title:
+            "Hầm chỉ huy – làm việc",
+
+        description:
+            "Không gian làm việc được mô phỏng với bàn, ghế, bản đồ, tài liệu và người đang trao đổi.",
+
+        details:[
+
+            "Bàn làm việc ở trung tâm.",
+
+            "Bản đồ phía sau.",
+
+            "Có người đang hội ý.",
+
+            "Có kệ tài liệu."
+
+        ],
+
+        note:
+            "Không gian được làm tối hơn, tập trung ánh sáng vàng tại khu vực làm việc."
+
+    },
+
+    decorate:
+
+    group => {
+
+        addTable(
+            group,
+            0,
+            -.8,
+            .3,
+            2.2,
+            1.15,
+            .8
+        );
+
+
+        addBench(
+            group,
+            -1,
+            -1.2,
+            1.1,
+            1.25
+        );
+
+
+        addBench(
+            group,
+            1.15,
+            -1.2,
+            1.1,
+            1.25
+        );
+
+
+        addWallMap(
+            group,
+            -1.6,
+            .45,
+            -2.42
+        );
+
+
+        addShelf(
+            group,
+            2.1,
+            0,
+            -1.8,
+            1.25
+        );
+
+
+        addPerson(
+            group,
+            -.75,
+            -.9,
+            .85,
+            .85,
+            "sit",
+            0x4d6047
+        );
+
+
+        addPerson(
+            group,
+            .85,
+            -.9,
+            .85,
+            .85,
+            "sit",
+            0x5d704f
+        );
+
+    }
+
+});
+
+
+
+/* =========================================================
+   28. HẦM SINH HOẠT
+========================================================= */
+
+createRoom({
+
+    key:
+        "living",
+
+    x:
+        11,
+
+    y:
+        -8,
+
+    z:
+        2,
+
+    w:
+        6.2,
+
+    h:
+        3,
+
+    d:
+        5,
+
+    camera:
+        [7,1.8,6],
+
+    data:{
+
+        icon:
+            "🛏️",
+
+        title:
+            "Hầm sinh hoạt – phòng ngủ",
+
+        description:
+            "Không gian sinh hoạt với chỗ nằm, hòm đồ, người nghỉ và ánh sáng đèn dầu vàng ấm.",
+
+        details:[
+
+            "Có giường nằm.",
+
+            "Có vật dụng sinh hoạt.",
+
+            "Có người nghỉ.",
+
+            "Ánh sáng đèn dầu tập trung trong phòng."
+
+        ],
+
+        note:
+            "Cách chiếu sáng nhằm tạo cảm giác kín, ấm và sâu trong lòng đất."
+
+    },
+
+    decorate:
+
+    group => {
+
+        addBed(
+            group,
+            -1.5,
+            -1.05,
+            .9
+        );
+
+
+        addBed(
+            group,
+            1.35,
+            -1.05,
+            .9
+        );
+
+
+        addCrate(
+            group,
+            0,
+            -1.1,
+            -.9,
+            .85
+        );
+
+
+        addSack(
+            group,
+            -2.1,
+            -1.1,
+            -.8,
+            .7
+        );
+
+
+        addPerson(
+            group,
+            1.35,
+            -.9,
+            .9,
+            .7,
+            "sleep",
+            0x596949
+        );
+
+    }
+
+});
+
+
+
+/* =========================================================
+   29. HẦM QUÂN Y
+========================================================= */
+
+createRoom({
+
+    key:
+        "medical",
+
+    x:
+        -11,
+
+    y:
+        -8,
+
+    z:
+        10,
+
+    w:
+        6.3,
+
+    h:
+        3.1,
+
+    d:
+        4.8,
+
+    camera:
+        [7,2,5.8],
+
+    data:{
+
+        icon:
+            "✚",
+
+        title:
+            "Hầm quân y",
+
+        description:
+            "Hầm quân y có giường điều trị, hộp y tế, kệ vật dụng và người chăm sóc.",
+
+        details:[
+
+            "Có chỗ điều trị.",
+
+            "Có hộp vật tư y tế.",
+
+            "Có người chăm sóc.",
+
+            "Ánh sáng vàng tập trung vào khu vực điều trị."
+
+        ],
+
+        note:
+            "Bố cục giúp học sinh dễ nhận biết đây là không gian quân y."
+
+    },
+
+    decorate:
+
+    group => {
+
+        addBed(
+            group,
+            -1.45,
+            -1.02,
+            .9,
+            .92
+        );
+
+
+        addBed(
+            group,
+            1.25,
+            -1.02,
+            .9,
+            .92
+        );
+
+
+        addMedicalBox(
+            group,
+            0,
+            -1.12,
+            -.9
+        );
+
+
+        addShelf(
+            group,
+            2,
+            0,
+            -1.7,
+            1.25
+        );
+
+
+        addPerson(
+            group,
+            -.85,
+            -.85,
+            .85,
+            .78,
+            "sit",
+            0x607054
+        );
+
+
+        addPerson(
+            group,
+            .65,
+            -.95,
+            -.1,
+            .78,
+            "stand",
+            0x4c5f45
+        );
+
+    }
+
+});
+
+
+
+/* =========================================================
+   30. KHO
+========================================================= */
+
+createRoom({
+
+    key:
+        "storage",
+
+    x:
+        4,
+
+    y:
+        -8,
+
+    z:
+        -9,
+
+    w:
+        6.2,
+
+    h:
+        3,
+
+    d:
+        4.7,
+
+    camera:
+        [7,1.8,6],
+
+    data:{
+
+        icon:
+            "📦",
+
+        title:
+            "Kho dự trữ",
+
+        description:
+            "Kho được mô phỏng với thùng gỗ, bao dự trữ, kệ và giá trang bị.",
+
+        details:[
+
+            "Nhiều thùng gỗ.",
+
+            "Bao dự trữ.",
+
+            "Kệ lưu trữ.",
+
+            "Giá trang bị."
+
+        ],
+
+        note:
+            "Ánh sáng vàng yếu giúp không gian kho nhìn sâu và cổ hơn."
+
+    },
+
+    decorate:
+
+    group => {
+
+        addCrate(
+            group,
+            -1.8,
+            -1.08,
+            .9
+        );
+
+
+        addCrate(
+            group,
+            -.65,
+            -1.08,
+            .9,
+            .9
+        );
+
+
+        addCrate(
+            group,
+            .45,
+            -1.08,
+            .85,
+            .9
+        );
+
+
+        addCrate(
+            group,
+            1.55,
+            -1.08,
+            .85,
+            .85
+        );
+
+
+        addSack(
+            group,
+            -1.5,
+            -1.1,
+            -.8,
+            .8
+        );
+
+
+        addSack(
+            group,
+            -.7,
+            -1.1,
+            -.8,
+            .7
+        );
+
+
+        addShelf(
+            group,
+            1.9,
+            0,
+            -1.65,
+            1.35
+        );
+
+
+        addEquipmentRack(
+            group,
+            -.2,
+            -.9,
+            -1.9
+        );
+
+    }
+
+});
+
+
+
+/* =========================================================
+   31. HẦM HỘI HỌP
+========================================================= */
+
+createRoom({
+
+    key:
+        "meeting",
+
+    x:
+        -4,
+
+    y:
+        -12,
+
+    z:
+        2,
+
+    w:
+        8,
+
+    h:
+        3.35,
+
+    d:
+        6,
+
+    camera:
+        [8.5,2.2,7],
+
+    data:{
+
+        icon:
+            "👥",
+
+        title:
+            "Hầm hội họp",
+
+        description:
+            "Không gian lớn với bàn dài, ghế băng và nhiều người cùng trao đổi.",
+
+        details:[
+
+            "Có bàn họp lớn.",
+
+            "Có nhiều người.",
+
+            "Có bản đồ.",
+
+            "Có ánh sáng đèn dầu vàng."
+
+        ],
+
+        note:
+            "Đây là một trong những không gian rộng nhất trong mô hình."
+
+    },
+
+    decorate:
+
+    group => {
+
+        addTable(
+            group,
+            0,
+            -.95,
+            .3,
+            4,
+            1.4,
+            .86
+        );
+
+
+        addBench(
+            group,
+            0,
+            -1.33,
+            1.25,
+            3.8
+        );
+
+
+        addBench(
+            group,
+            0,
+            -1.33,
+            -.7,
+            3.8
+        );
+
+
+        addWallMap(
+            group,
+            -2.2,
+            .65,
+            -2.9
+        );
+
+
+        addPerson(
+            group,
+            -1.4,
+            -.94,
+            .75,
+            .8,
+            "sit",
+            0x4b5f44
+        );
+
+
+        addPerson(
+            group,
+            -.25,
+            -.94,
+            .75,
+            .8,
+            "sit",
+            0x5b6e4c
+        );
+
+
+        addPerson(
+            group,
+            1,
+            -.94,
+            .75,
+            .8,
+            "sit",
+            0x4a5d43
+        );
+
+
+        addPerson(
+            group,
+            0,
+            -.94,
+            -.3,
+            .8,
+            "sit",
+            0x556948
+        );
+
+    }
+
+});
+
+
+
+/* =========================================================
+   32. HẦM CHỮ A
+========================================================= */
+
+const aFrameData = {
+
+    icon:
+        "🔺",
+
+    title:
+        "Hầm chữ A",
+
+    description:
+        "Không gian trú với hệ thống thanh chống nghiêng tạo hình gần chữ A.",
+
+    details:[
+
+        "Thanh chống nghiêng.",
+
+        "Không gian trú.",
+
+        "Có giường và vật dụng.",
+
+        "Có đèn dầu vàng."
+
+    ],
+
+    note:
+        "Mô hình giúp học sinh quan sát rõ kết cấu chống đỡ."
+
+};
+
+
+(function(){
+
+    const x=13;
+
+    const y=-12;
+
+    const z=2;
+
+
+    const group =
+        new THREE.Group();
+
+
+    group.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    const floor =
+        box(
+
+            5.5,
+            .16,
+            5.4,
+
+            material(
+                0x321b14,
+                .99
+            )
+
+        );
+
+
+    floor.position.y =
+        -1.7;
+
+
+    group.add(
+        floor
+    );
+
+
+    const back =
+        box(
+
+            5.5,
+            2.6,
+            .16,
+
+            material(
+                0x5e3424,
+                .99
+            )
+
+        );
+
+
+    back.position.set(
+        0,
+        -.3,
+        -2.7
+    );
+
+
+    group.add(
+        back
+    );
+
+
+    for(
+        let zz=-2.2;
+        zz<=2.2;
+        zz+=.9
+    ){
+
+        const left =
+            box(
+                .1,
+                2,
+                .1,
+                darkWoodMat
+            );
+
+
+        left.position.set(
+            -.55,
+            -.1,
+            zz
+        );
+
+
+        left.rotation.z =
+            .27;
+
+
+        group.add(
+            left
+        );
+
+
+        const right =
+            box(
+                .1,
+                2,
+                .1,
+                darkWoodMat
+            );
+
+
+        right.position.set(
+            .55,
+            -.1,
+            zz
+        );
+
+
+        right.rotation.z =
+            -.27;
+
+
+        group.add(
+            right
+        );
+
+    }
+
+
+    addBed(
+        group,
+        -1.2,
+        -1.1,
+        .9,
+        .82
+    );
+
+
+    addCrate(
+        group,
+        1.2,
+        -1.12,
+        .8,
+        .7
+    );
+
+
+    addLantern(
+        group,
+        0,
+        .85,
+        1.5
+    );
+
+
+    addPerson(
+        group,
+        -1.2,
+        -.9,
+        .9,
+        .65,
+        "sleep",
+        0x556547
+    );
+
+
+    scene.add(
+        group
+    );
+
+
+    const clickBox =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                5.5,
+                3.4,
+                5.4
+            ),
+
+            new THREE.MeshBasicMaterial({
+                transparent:true,
+                opacity:0
+            })
+
+        );
+
+
+    clickBox.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    clickBox.userData =
+        aFrameData;
+
+
+    scene.add(
+        clickBox
+    );
+
+
+    clickableObjects.push(
+        clickBox
+    );
+
+
+    addMarker(
+        x,
+        y+2.1,
+        z+2.2,
+        aFrameData
+    );
+
+
+    focusTargets.aframe = {
+
+        position:
+            new THREE.Vector3(
+                19,
+                -10,
+                8
+            ),
+
+        target:
+            new THREE.Vector3(
+                x,
+                y,
+                z
+            )
+
+    };
+
+})();
+
+
+
+/* =========================================================
+   33. HẦM CHIẾN ĐẤU
+========================================================= */
+
+createRoom({
+
+    key:
+        "combat",
+
+    x:
+        19,
+
+    y:
+        -3.5,
+
+    z:
+        2,
+
+    w:
+        3.8,
+
+    h:
+        2.9,
+
+    d:
+        3.8,
+
+    camera:
+        [5,1.7,4.2],
+
+    data:{
+
+        icon:
+            "🛡️",
+
+        title:
+            "Hầm chiến đấu",
+
+        description:
+            "Không gian nhỏ có vị trí quan sát, người trực và trang bị.",
+
+        details:[
+
+            "Có vị trí quan sát.",
+
+            "Có người trực.",
+
+            "Có trang bị.",
+
+            "Có ánh sáng vàng yếu."
+
+        ],
+
+        note:
+            "Không gian được làm tối hơn để tạo chiều sâu."
+
+    },
+
+    decorate:
+
+    group => {
+
+        const opening =
+            box(
+                1.2,
+                .38,
+                .18,
+                darkWoodMat
+            );
+
+
+        opening.position.set(
+            0,
+            .1,
+            1.8
+        );
+
+
+        group.add(
+            opening
+        );
+
+
+        addEquipmentRack(
+            group,
+            -.2,
+            -.9,
+            -1.35
+        );
+
+
+        addCrate(
+            group,
+            -.95,
+            -1.05,
+            -.7,
+            .65
+        );
+
+
+        addPerson(
+            group,
+            .75,
+            -.9,
+            .1,
+            .75,
+            "crouch",
+            0x4b5d42
+        );
+
+    }
+
+});
+
+
+
+/* =========================================================
+   34. GIẾNG NƯỚC
+========================================================= */
+
+const wellData = {
+
+    icon:
+        "💧",
+
+    title:
+        "Giếng nước",
+
+    description:
+        "Giếng được mô phỏng như một trục sâu với nước phía dưới và thang đi xuống.",
+
+    details:[
+
+        "Có trục giếng.",
+
+        "Có thang.",
+
+        "Có nước ở phía dưới.",
+
+        "Kết nối với không gian dưới lòng đất."
+
+    ],
+
+    note:
+        "Màu nước được giữ xanh để tạo điểm nhận biết rõ trong tổng thể nâu đất."
+
+};
+
+
+const wellOuter =
+    cylinder(
+
+        1,
+        1,
+        11,
+
+        new THREE.MeshStandardMaterial({
+
+            color:
+                0x3e3028,
+
+            transparent:
+                true,
+
+            opacity:
+                .58,
+
+            roughness:
+                .92
+
+        }),
+
+        24
+
+    );
+
+
+wellOuter.position.set(
+    18,
+    -4.8,
+    -11
+);
+
+
+wellOuter.userData =
+    wellData;
+
+
+scene.add(
+    wellOuter
+);
+
+
+clickableObjects.push(
+    wellOuter
+);
+
+
+const water =
+    cylinder(
+
+        .88,
+        .88,
+        2.6,
+
+        new THREE.MeshStandardMaterial({
+
+            color:
+                0x397aa2,
+
+            transparent:
+                true,
+
+            opacity:
+                .72,
+
+            roughness:
+                .25
+
+        }),
+
+        24
+
+    );
+
+
+water.position.set(
+    18,
+    -9,
+    -11
+);
+
+
+scene.add(
+    water
+);
+
+
+const ladderLeft =
+    box(
+        .07,
+        8,
+        .07,
+        darkWoodMat
+    );
+
+
+ladderLeft.position.set(
+    17.65,
+    -4,
+    -10.6
+);
+
+
+scene.add(
+    ladderLeft
+);
+
+
+const ladderRight =
+    ladderLeft.clone();
+
+
+ladderRight.position.x =
+    18.35;
+
+
+scene.add(
+    ladderRight
+);
+
+
+for(
+    let i=0;
+    i<9;
+    i++
+){
+
+    const rung =
+        box(
+            .72,
+            .055,
+            .07,
+            woodMat
+        );
+
+
+    rung.position.set(
+        18,
+        -7.7+
+        i*.85,
+        -10.6
+    );
+
+
+    scene.add(
+        rung
+    );
+
+}
+
+
+addMarker(
+    18,
+    1.5,
+    -11,
+    wellData
+);
+
+
+focusTargets.well = {
+
+    position:
+        new THREE.Vector3(
+            25,
+            7,
+            -3
+        ),
+
+    target:
+        new THREE.Vector3(
+            18,
+            -3,
+            -11
+        )
+
+};
+
+
+
+/* =========================================================
+   35. THÔNG KHÍ
+========================================================= */
+
+function createVent(
+    x,
+    z
+){
+
+    const vent =
+        cylinder(
+
+            .15,
+            .15,
+            6.5,
+
+            material(
+                0x452f24,
+                1
+            ),
+
+            10
+
+        );
+
+
+    vent.position.set(
+        x,
+        -2.1,
+        z
+    );
+
+
+    scene.add(
+        vent
+    );
+
+
+    const cap =
+        box(
+
+            .4,
+            .2,
+            .4,
+
+            material(
+                0x573a2a,
+                1
+            )
+
+        );
+
+
+    cap.position.set(
+        x,
+        1.25,
+        z
+    );
+
+
+    scene.add(
+        cap
+    );
+
+}
+
+
+createVent(-10,9);
+createVent(8,9);
+createVent(-6,-8);
+
+
+
+/* =========================================================
+   36. CAMERA
+========================================================= */
+
+const cameraTween = {
+
+    active:false,
+
+    destination:
+        new THREE.Vector3(),
+
+    target:
+        new THREE.Vector3()
+
+};
+
+
+
+function moveCamera(
+    position,
+    target
+){
+
+    cameraTween.active =
+        true;
+
+
+    cameraTween.destination
+        .copy(
+            position
+        );
+
+
+    cameraTween.target
+        .copy(
+            target
+        );
+
+}
+
+
+
+function goOverview(){
+
+    moveCamera(
+
+        new THREE.Vector3(
+            37,
+            23,
+            39
+        ),
+
+        new THREE.Vector3(
+            0,
+            -5,
+            0
+        )
+
+    );
+
+}
+
+
+
+function focusRoom(
+    key
+){
+
+    const location =
+        focusTargets[key];
+
+
+    if(
+        !location
+    ){
+
+        return;
+
+    }
+
+
+    moveCamera(
+
+        location.position,
+
+        location.target
+
+    );
+
+}
+
+
+
+/* =========================================================
+   37. POPUP
+========================================================= */
+
+function openInfo(
+    data
+){
+
+    document
+        .getElementById(
+            "infoIcon"
+        )
+        .textContent =
+        data.icon;
+
+
+    document
+        .getElementById(
+            "infoTitle"
+        )
+        .textContent =
+        data.title;
+
+
+    document
+        .getElementById(
+            "infoDescription"
+        )
+        .textContent =
+        data.description;
+
+
+    document
+        .getElementById(
+            "infoDetails"
+        )
+        .innerHTML =
+        data.details
+        .map(
+            item =>
+            `<li>${item}</li>`
+        )
+        .join("");
+
+
+    document
+        .getElementById(
+            "infoNote"
+        )
+        .textContent =
+        data.note;
+
+
+    document
+        .getElementById(
+            "infoPanel"
+        )
+        .classList
+        .add("show");
+
+
+    document
+        .getElementById(
+            "overlay"
+        )
+        .classList
+        .add("show");
+
+}
+
+
+
+function closeInfo(){
+
+    document
+        .getElementById(
+            "infoPanel"
+        )
+        .classList
+        .remove("show");
+
+
+    document
+        .getElementById(
+            "overlay"
+        )
+        .classList
+        .remove("show");
+
+}
+
+
+
+/* =========================================================
+   38. RAYCAST
+========================================================= */
+
+const raycaster =
+    new THREE.Raycaster();
+
+
+const mouse =
+    new THREE.Vector2();
+
+
+const hoverName =
+    document.getElementById(
+        "hoverName"
+    );
+
+
+
+function updateMouse(
+    event
+){
+
+    const bounds =
+        renderer.domElement
+        .getBoundingClientRect();
+
+
+    mouse.x =
+        (
+            (
+                event.clientX-
+                bounds.left
+            )/
+            bounds.width
+        )*
+        2-
+        1;
+
+
+    mouse.y =
+        -
+        (
+            (
+                event.clientY-
+                bounds.top
+            )/
+            bounds.height
+        )*
+        2+
+        1;
+
+}
+
+
+
+renderer.domElement
+.addEventListener(
+
+    "pointermove",
+
+    event => {
+
+        updateMouse(
+            event
+        );
+
+
+        raycaster
+            .setFromCamera(
+                mouse,
+                camera
+            );
+
+
+        const hit =
+            raycaster
+            .intersectObjects(
+                clickableObjects,
+                false
+            );
+
+
+        if(
+            hit.length>0
+            &&
+            hit[0]
+            .object
+            .userData
+            .title
+        ){
+
+            renderer
+                .domElement
+                .style
+                .cursor =
+                "pointer";
+
+
+            hoverName.style.display =
+                "block";
+
+
+            hoverName.style.left =
+                event.clientX+
+                12+
+                "px";
+
+
+            hoverName.style.top =
+                event.clientY+
+                12+
+                "px";
+
+
+            hoverName.textContent =
+                hit[0]
+                .object
+                .userData
+                .title;
+
+        }
+
+        else{
+
+            renderer
+                .domElement
+                .style
+                .cursor =
+                "grab";
+
+
+            hoverName.style.display =
+                "none";
+
+        }
+
+    }
+
+);
+
+
+
+renderer.domElement
+.addEventListener(
+
+    "click",
+
+    event => {
+
+        updateMouse(
+            event
+        );
+
+
+        raycaster
+            .setFromCamera(
+                mouse,
+                camera
+            );
+
+
+        const hit =
+            raycaster
+            .intersectObjects(
+                clickableObjects,
+                false
+            );
+
+
+        if(
+            hit.length>0
+        ){
+
+            const data =
+                hit[0]
+                .object
+                .userData;
+
+
+            if(
+                data
+                &&
+                data.title
+            ){
+
+                openInfo(
+                    data
+                );
+
+            }
+
+        }
+
+    }
+
+);
+
+
+
+/* =========================================================
+   39. RESIZE
+========================================================= */
+
+window.addEventListener(
+
+    "resize",
+
+    () => {
+
+        camera.aspect =
+            container.clientWidth/
+            container.clientHeight;
+
+
+        camera
+            .updateProjectionMatrix();
+
+
+        renderer
+            .setSize(
+
+                container.clientWidth,
+
+                container.clientHeight
+
+            );
+
+    }
+
+);
+
+
+
+/* =========================================================
+   40. ANIMATION
+========================================================= */
+
+const clock =
+    new THREE.Clock();
+
+
+
+function animate(){
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    const time =
+        clock.getElapsedTime();
+
+
+    if(
+        cameraTween.active
+    ){
+
+        camera.position
+        .lerp(
+
+            cameraTween.destination,
+
+            .055
+
+        );
+
+
+        controls.target
+        .lerp(
+
+            cameraTween.target,
+
+            .055
+
+        );
+
+
+        if(
+            camera.position
+            .distanceTo(
+                cameraTween.destination
+            )
+            <
+            .08
+        ){
+
+            cameraTween.active =
+                false;
+
+        }
+
+    }
+
+
+    markers
+    .forEach(
+
+        (
+            marker,
+            index
+        ) => {
+
+            const scale =
+                1+
+                Math.sin(
+
+                    time*2+
+                    index
+
+                )*
+                .1;
+
+
+            marker.scale
+                .setScalar(
+                    scale
+                );
+
+        }
+
+    );
+
+
+    smokeParticles
+    .forEach(
+
+        smoke => {
+
+            smoke.position.y +=
+                smoke
+                .userData
+                .speed*
+                .009;
+
+
+            smoke.position.x =
+                smoke
+                .userData
+                .baseX
+                +
+                Math.sin(
+
+                    time*.5+
+                    smoke
+                    .userData
+                    .phase
+
+                )*
+                .045;
+
+
+            smoke.position.z =
+                smoke
+                .userData
+                .baseZ
+                +
+                Math.cos(
+
+                    time*.4+
+                    smoke
+                    .userData
+                    .phase
+
+                )*
+                .03;
+
+
+            const rise =
+                smoke.position.y-
+                smoke
+                .userData
+                .baseY;
+
+
+            smoke.scale
+                .setScalar(
+
+                    1+
+                    rise*
+                    .14
+
+                );
+
+
+            smoke.material.opacity -=
+                .0003;
+
+
+            if(
+
+                smoke.position.y >
+                smoke
+                .userData
+                .baseY+
+                1.5
+
+                ||
+
+                smoke.material.opacity <
+                .015
+
+            ){
+
+                smoke.position.y =
+                    smoke
+                    .userData
+                    .baseY;
+
+
+                smoke.position.x =
+                    smoke
+                    .userData
+                    .baseX
+                    +
+                    (
+                        Math.random()-.5
+                    )*
+                    .1;
+
+
+                smoke.position.z =
+                    smoke
+                    .userData
+                    .baseZ
+                    +
+                    (
+                        Math.random()-.5
+                    )*
+                    .1;
+
+
+                smoke.scale
+                    .setScalar(
+                        1
+                    );
+
+
+                smoke.material.opacity =
+                    .045+
+                    Math.random()*
+                    .055;
+
+            }
+
+        }
+
+    );
+
+
+    controls.update();
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+
+animate();
+
+
+goOverview();
+
+</script>
+
+</body>
+</html>

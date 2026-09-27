@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Học liệu số Lịch sử và Địa lí</title>
+
+<style>
+
+/* =========================================================
+   01. MÀU SẮC
+========================================================= */
+
+:root{
+    --navy:#18384c;
+    --text:#233a49;
+    --muted:#73818a;
+
+    --history:#8a4d2f;
+    --history-dark:#5b301f;
+    --history-light:#d4a264;
+
+    --geo:#3e715d;
+    --geo-dark:#244d43;
+    --geo-blue:#497f91;
+
+    --cream:#f5efe4;
+    --white:#ffffff;
+
+    --shadow:
+        0 24px 60px
+        rgba(25,45,55,.15);
+}
+
+
+/* =========================================================
+   02. RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+}
+
+body{
+    font-family:
+        "Segoe UI",
+        "Be Vietnam Pro",
+        Arial,
+        sans-serif;
+
+    color:var(--text);
+
+    background:
+        linear-gradient(
+            135deg,
+            #e8eee9 0%,
+            #f5efe4 48%,
+            #ecddc7 100%
+        );
+
+    overflow-x:hidden;
+}
+
+
+/* =========================================================
+   03. TRANG CHỦ
+========================================================= */
+
+.home{
+    position:relative;
+
+    min-height:100vh;
+
+    overflow:hidden;
+
+    padding:
+        50px 5vw
+        55px;
+}
+
+
+/* nền sáng phía sau */
+.home::before{
+    content:"";
+
+    position:absolute;
+
+    width:600px;
+    height:600px;
+
+    border-radius:50%;
+
+    top:-300px;
+    right:-170px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(212,162,100,.23),
+            transparent 68%
+        );
+
+    pointer-events:none;
+}
+
+
+.home::after{
+    content:"";
+
+    position:absolute;
+
+    width:600px;
+    height:600px;
+
+    border-radius:50%;
+
+    bottom:-340px;
+    left:-200px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(62,113,93,.22),
+            transparent 68%
+        );
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   04. HEADER
+========================================================= */
+
+.header{
+    position:relative;
+
+    z-index:5;
+
+    width:
+        min(
+            1180px,
+            100%
+        );
+
+    margin:
+        0 auto
+        45px;
+
+    text-align:center;
+}
+
+
+.logo{
+    width:62px;
+    height:62px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin:
+        0 auto
+        18px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--history),
+            var(--geo)
+        );
+
+    color:white;
+
+    box-shadow:
+        0 14px 30px
+        rgba(49,67,65,.20);
+}
+
+
+.logo svg{
+    width:34px;
+    height:34px;
+}
+
+
+.kicker{
+    display:inline-block;
+
+    margin-bottom:10px;
+
+    color:#8a6648;
+
+    font-size:11px;
+    font-weight:900;
+
+    letter-spacing:.18em;
+}
+
+
+.header h1{
+    color:var(--navy);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(
+            37px,
+            5vw,
+            62px
+        );
+
+    line-height:1.06;
+
+    letter-spacing:-.025em;
+}
+
+
+.header h1 span{
+    color:var(--history);
+}
+
+
+.header p{
+    max-width:650px;
+
+    margin:
+        15px auto
+        0;
+
+    color:var(--muted);
+
+    font-size:14px;
+
+    line-height:1.75;
+}
+
+
+/* =========================================================
+   05. HAI Ô CHÍNH
+========================================================= */
+
+.subject-grid{
+    position:relative;
+
+    z-index:5;
+
+    width:
+        min(
+            1100px,
+            100%
+        );
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:25px;
+}
+
+
+/* =========================================================
+   06. CARD CHUNG
+========================================================= */
+
+.subject-card{
+    position:relative;
+
+    min-height:500px;
+
+    overflow:hidden;
+
+    border-radius:32px;
+
+    text-decoration:none;
+
+    box-shadow:
+        var(--shadow);
+
+    isolation:isolate;
+
+    transition:
+        transform .4s cubic-bezier(.2,.8,.2,1),
+        box-shadow .4s ease;
+}
+
+
+.subject-card:hover{
+    transform:
+        translateY(-12px)
+        scale(1.015);
+
+    box-shadow:
+        0 35px 80px
+        rgba(30,45,55,.24);
+}
+
+
+/* ánh sáng card */
+.subject-card::after{
+    content:"";
+
+    position:absolute;
+
+    width:350px;
+    height:350px;
+
+    border-radius:50%;
+
+    right:-140px;
+    top:-130px;
+
+    background:
+        rgba(255,255,255,.12);
+
+    transition:
+        .5s ease;
+
+    z-index:-1;
+}
+
+
+.subject-card:hover::after{
+    transform:
+        scale(1.4);
+}
+
+
+/* =========================================================
+   07. CARD LỊCH SỬ
+========================================================= */
+
+.history-card{
+    background:
+        linear-gradient(
+            145deg,
+            #4c2a1d 0%,
+            #764027 42%,
+            #a6683e 72%,
+            #c78e58 100%
+        );
+
+    color:#fff;
+}
+
+
+/* =========================================================
+   08. CARD ĐỊA LÍ
+========================================================= */
+
+.geo-card{
+    background:
+        linear-gradient(
+            145deg,
+            #183f43 0%,
+            #2d6355 42%,
+            #4d8167 72%,
+            #669597 100%
+        );
+
+    color:#fff;
+}
+
+
+/* =========================================================
+   09. NỘI DUNG CARD
+========================================================= */
+
+.card-content{
+    position:relative;
+
+    z-index:5;
+
+    height:100%;
+
+    min-height:500px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-end;
+
+    padding:
+        38px;
+}
+
+
+.card-type{
+    width:max-content;
+
+    margin-bottom:12px;
+
+    padding:
+        7px 11px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.20);
+
+    border-radius:999px;
+
+    background:
+        rgba(255,255,255,.10);
+
+    color:
+        rgba(255,255,255,.85);
+
+    backdrop-filter:
+        blur(8px);
+
+    font-size:10px;
+    font-weight:900;
+
+    letter-spacing:.14em;
+}
+
+
+.card-content h2{
+    margin-bottom:10px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(
+            36px,
+            4vw,
+            52px
+        );
+
+    color:white;
+}
+
+
+.card-content p{
+    max-width:430px;
+
+    margin-bottom:22px;
+
+    color:
+        rgba(255,255,255,.75);
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+
+.enter{
+    display:flex;
+    align-items:center;
+
+    gap:10px;
+
+    font-size:13px;
+    font-weight:900;
+}
+
+
+.arrow{
+    width:37px;
+    height:37px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.14);
+
+    transition:
+        .3s;
+}
+
+
+.subject-card:hover .arrow{
+    transform:
+        translateX(7px);
+
+    background:
+        rgba(255,255,255,.23);
+}
+
+
+/* =========================================================
+   10. MINH HỌA LỊCH SỬ
+========================================================= */
+
+.history-art{
+    position:absolute;
+
+    inset:0;
+
+    pointer-events:none;
+
+    overflow:hidden;
+}
+
+
+/* mặt trời vàng */
+.history-sun{
+    position:absolute;
+
+    width:215px;
+    height:215px;
+
+    border-radius:50%;
+
+    right:45px;
+    top:46px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,214,135,.55) 0%,
+            rgba(255,192,93,.15) 46%,
+            transparent 72%
+        );
+
+    filter:
+        blur(1px);
+
+    animation:
+        breathe
+        5s ease-in-out
+        infinite;
+}
+
+
+/* đền / công trình lịch sử */
+.temple{
+    position:absolute;
+
+    width:270px;
+    height:170px;
+
+    right:35px;
+    top:120px;
+
+    opacity:.32;
+}
+
+
+.temple-roof{
+    position:absolute;
+
+    left:25px;
+    top:10px;
+
+    width:220px;
+    height:45px;
+
+    background:
+        rgba(255,231,192,.75);
+
+    clip-path:
+        polygon(
+            50% 0,
+            100% 65%,
+            82% 55%,
+            82% 100%,
+            18% 100%,
+            18% 55%,
+            0 65%
+        );
+}
+
+
+.temple-body{
+    position:absolute;
+
+    left:66px;
+    top:53px;
+
+    width:140px;
+    height:87px;
+
+    border-left:
+        10px solid
+        rgba(255,231,192,.60);
+
+    border-right:
+        10px solid
+        rgba(255,231,192,.60);
+
+    border-bottom:
+        10px solid
+        rgba(255,231,192,.60);
+}
+
+
+.temple-column{
+    position:absolute;
+
+    width:8px;
+    height:80px;
+
+    background:
+        rgba(255,231,192,.60);
+
+    top:56px;
+}
+
+
+.temple-column.c1{left:92px}
+.temple-column.c2{left:125px}
+.temple-column.c3{left:158px}
+.temple-column.c4{left:191px}
+
+
+/* vòng thời gian */
+.history-ring{
+    position:absolute;
+
+    width:360px;
+    height:360px;
+
+    border-radius:50%;
+
+    border:
+        1px dashed
+        rgba(255,231,192,.15);
+
+    top:-100px;
+    left:-120px;
+
+    animation:
+        rotate
+        30s linear
+        infinite;
+}
+
+
+/* =========================================================
+   11. MINH HỌA ĐỊA LÍ
+========================================================= */
+
+.geo-art{
+    position:absolute;
+
+    inset:0;
+
+    overflow:hidden;
+
+    pointer-events:none;
+}
+
+
+/* mặt trời */
+.geo-sun{
+    position:absolute;
+
+    width:160px;
+    height:160px;
+
+    border-radius:50%;
+
+    right:45px;
+    top:50px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(236,221,151,.48),
+            rgba(236,221,151,.08) 55%,
+            transparent 72%
+        );
+
+    animation:
+        breathe
+        5.5s ease-in-out
+        infinite;
+}
+
+
+/* dãy núi */
+.mountain{
+    position:absolute;
+
+    bottom:125px;
+
+    width:0;
+    height:0;
+
+    border-style:solid;
+}
+
+
+.mountain.one{
+    left:28px;
+
+    border-width:
+        0 130px 175px 130px;
+
+    border-color:
+        transparent
+        transparent
+        rgba(26,73,57,.75)
+        transparent;
+}
+
+
+.mountain.two{
+    right:-20px;
+
+    border-width:
+        0 170px 220px 170px;
+
+    border-color:
+        transparent
+        transparent
+        rgba(31,82,66,.72)
+        transparent;
+}
+
+
+.mountain.three{
+    left:190px;
+
+    border-width:
+        0 100px 135px 100px;
+
+    border-color:
+        transparent
+        transparent
+        rgba(92,132,93,.75)
+        transparent;
+}
+
+
+/* đường đồng mức */
+.contour{
+    position:absolute;
+
+    width:310px;
+    height:210px;
+
+    right:-55px;
+    top:25px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    border-radius:
+        52% 48% 62% 38%;
+
+    transform:
+        rotate(-15deg);
+}
+
+
+.contour::before,
+.contour::after{
+    content:"";
+
+    position:absolute;
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    border-radius:
+        52% 48% 62% 38%;
+}
+
+
+.contour::before{
+    inset:32px;
+}
+
+
+.contour::after{
+    inset:66px;
+}
+
+
+/* =========================================================
+   12. HIỆU ỨNG
+========================================================= */
+
+@keyframes rotate{
+    to{
+        transform:
+            rotate(360deg);
+    }
+}
+
+
+@keyframes breathe{
+    0%,
+    100%{
+        transform:
+            scale(1);
+
+        opacity:.8;
+    }
+
+    50%{
+        transform:
+            scale(1.08);
+
+        opacity:1;
+    }
+}
+
+
+/* icon bay */
+.floating-icon{
+    position:absolute;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:58px;
+    height:58px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:18px;
+
+    background:
+        rgba(255,255,255,.10);
+
+    backdrop-filter:
+        blur(8px);
+
+    font-size:26px;
+
+    box-shadow:
+        0 15px 30px
+        rgba(0,0,0,.10);
+
+    animation:
+        floating
+        4s ease-in-out
+        infinite;
+}
+
+
+.history-card .floating-icon{
+    top:54px;
+    left:48px;
+}
+
+
+.geo-card .floating-icon{
+    top:58px;
+    left:48px;
+
+    animation-delay:
+        -1.5s;
+}
+
+
+@keyframes floating{
+    0%,
+    100%{
+        transform:
+            translateY(0)
+            rotate(-3deg);
+    }
+
+    50%{
+        transform:
+            translateY(-11px)
+            rotate(3deg);
+    }
+}
+
+
+/* =========================================================
+   13. FOOTER NHỎ
+========================================================= */
+
+.footer{
+    position:relative;
+
+    z-index:5;
+
+    width:
+        min(
+            1100px,
+            100%
+        );
+
+    margin:
+        32px auto
+        0;
+
+    text-align:center;
+
+    color:#7c817d;
+
+    font-size:11px;
+}
+
+
+.footer strong{
+    color:#52616a;
+}
+
+
+/* =========================================================
+   14. RESPONSIVE
+========================================================= */
+
+@media(max-width:850px){
+
+    .home{
+        padding:
+            35px 18px
+            45px;
+    }
+
+    .header{
+        margin-bottom:30px;
+    }
+
+    .subject-grid{
+        grid-template-columns:1fr;
+    }
+
+    .subject-card{
+        min-height:410px;
+    }
+
+    .card-content{
+        min-height:410px;
+
+        padding:28px;
+    }
+
+}
+
+
+@media(max-width:520px){
+
+    .header h1{
+        font-size:38px;
+    }
+
+    .header p{
+        font-size:13px;
+    }
+
+    .subject-card{
+        min-height:380px;
+    }
+
+    .card-content{
+        min-height:380px;
+    }
+
+    .card-content h2{
+        font-size:35px;
+    }
+
+}
+</style>
+</head>
+
+
+<body>
+
+
+<main class="home">
+
+
+<!-- =====================================================
+     TIÊU ĐỀ
+===================================================== -->
+
+<header class="header">
+
+
+    <div class="logo">
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7">
+
+            <path
+                d="M4 5.5L9 3l6 2.5L20 3v15.5L15 21l-6-2.5L4 21V5.5z"/>
+
+            <path
+                d="M9 3v15.5M15 5.5V21"/>
+
+        </svg>
+
+    </div>
+
+
+    <div class="kicker">
+
+        KHÔNG GIAN HỌC TẬP SỐ
+
+    </div>
+
+
+    <h1>
+
+        Học liệu số
+        <span>
+            Lịch sử & Địa lí
+        </span>
+
+    </h1>
+
+
+    <p>
+
+        Chọn lĩnh vực em muốn khám phá.
+        Mỗi không gian học tập sẽ đưa em đến
+        các tư liệu, mô hình và hoạt động
+        trải nghiệm tương tác.
+
+    </p>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     HAI Ô LỰA CHỌN
+===================================================== -->
+
+<section class="subject-grid">
+
+
+<!-- =====================================================
+     LỊCH SỬ
+===================================================== -->
+
+<a
+    class="subject-card history-card"
+    href="MÔ HÌNH ĐỊA ĐẠO.html">
+
+
+    <div class="history-art">
+
+        <div class="history-ring"></div>
+
+        <div class="history-sun"></div>
+
+
+        <div class="temple">
+
+            <div class="temple-roof"></div>
+
+            <div class="temple-body"></div>
+
+            <div class="temple-column c1"></div>
+            <div class="temple-column c2"></div>
+            <div class="temple-column c3"></div>
+            <div class="temple-column c4"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="floating-icon">
+        📜
+    </div>
+
+
+    <div class="card-content">
+
+
+        <div class="card-type">
+
+            HỌC LIỆU LỊCH SỬ
+
+        </div>
+
+
+        <h2>
+            Lịch sử
+        </h2>
+
+
+        <p>
+
+            Khám phá các sự kiện, nhân vật,
+            di tích và câu chuyện lịch sử
+            thông qua học liệu trực quan
+            và hoạt động tương tác.
+
+        </p>
+
+
+        <div class="enter">
+
+            Bắt đầu khám phá
+
+            <span class="arrow">
+                →
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+</a>
+
+
+
+<!-- =====================================================
+     ĐỊA LÍ
+===================================================== -->
+
+<a
+    class="subject-card geo-card"
+    href="Địa lý.html">
+
+
+    <div class="geo-art">
+
+        <div class="geo-sun"></div>
+
+        <div class="contour"></div>
+
+        <div class="mountain one"></div>
+        <div class="mountain two"></div>
+        <div class="mountain three"></div>
+
+    </div>
+
+
+    <div class="floating-icon">
+        🧭
+    </div>
+
+
+    <div class="card-content">
+
+
+        <div class="card-type">
+
+            HỌC LIỆU ĐỊA LÍ
+
+        </div>
+
+
+        <h2>
+            Địa lí
+        </h2>
+
+
+        <p>
+
+            Khám phá bản đồ, địa hình,
+            môi trường và mối quan hệ
+            giữa tự nhiên với hoạt động
+            của con người.
+
+        </p>
+
+
+        <div class="enter">
+
+            Bắt đầu khám phá
+
+            <span class="arrow">
+                →
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+</a>
+
+
+</section>
+
+
+
+<footer class="footer">
+
+    <strong>
+        Học liệu số Lịch sử – Địa lí
+    </strong>
+
+    &nbsp; • &nbsp;
+
+    Khám phá • Trải nghiệm • Kết nối tri thức
+
+</footer>
+
+
+</main>
+
+
+
+<script>
+
+/* =========================================================
+   HIỆU ỨNG DI CHUYỂN NHẸ THEO CHUỘT
+========================================================= */
+
+const cards =
+    document.querySelectorAll(
+        ".subject-card"
+    );
+
+
+cards.forEach(card=>{
+
+    card.addEventListener(
+        "mousemove",
+        event=>{
+
+            if(
+                window.innerWidth <
+                850
+            ){
+                return;
+            }
+
+            const rect =
+                card
+                .getBoundingClientRect();
+
+            const x =
+                event.clientX -
+                rect.left;
+
+            const y =
+                event.clientY -
+                rect.top;
+
+            const centerX =
+                rect.width / 2;
+
+            const centerY =
+                rect.height / 2;
+
+            const rotateX =
+                (
+                    centerY - y
+                ) / 45;
+
+            const rotateY =
+                (
+                    x - centerX
+                ) / 45;
+
+
+            card.style.transform =
+                `
+                perspective(1000px)
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+                translateY(-8px)
+                `;
+
+        }
+    );
+
+
+    card.addEventListener(
+        "mouseleave",
+        ()=>{
+
+            card.style.transform =
+                "";
+
+        }
+    );
+
+});
+
+</script>
+
+
+</body>
+</html>

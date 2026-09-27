@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>KHO HỌC THUẬT SỐ - ĐỊA ĐẠO CỦ CHI</title>
+
+  <style>
+    :root {
+      --bg: #f4f5f2;
+      --card: #ffffff;
+      --text: #24384a;
+      --muted: #7b858d;
+      --primary: #2d4355;
+      --primary-dark: #203646;
+      --moss: #5c7052;
+      --earth: #8a6652;
+      --shadow: 0 14px 36px rgba(36, 56, 74, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Be Vietnam Pro", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* =========================
+       THANH ĐIỀU HƯỚNG
+    ========================== */
+
+    .navbar {
+      width: 100%;
+      background: rgba(244, 245, 242, 0.96);
+      border-bottom: 1px solid rgba(36, 56, 74, 0.08);
+
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-inner {
+      width: min(1200px, calc(100% - 40px));
+      margin: auto;
+
+      min-height: 72px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 18px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .menu {
+      display: flex;
+      gap: 24px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: var(--text);
+
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .menu a:hover {
+      color: var(--earth);
+    }
+
+    /* =========================
+       PHẦN ĐẦU TRANG
+    ========================== */
+
+    .hero {
+      padding: 90px 20px 55px;
+      text-align: center;
+    }
+
+    .hero-label {
+      display: inline-block;
+
+      background: #e7ece4;
+      color: var(--moss);
+
+      padding: 8px 16px;
+
+      border-radius: 999px;
+
+      font-size: 13px;
+      font-weight: 800;
+
+      letter-spacing: 1.3px;
+
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 1.08;
+
+      font-weight: 800;
+
+      letter-spacing: -2px;
+
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      max-width: 850px;
+      margin: auto;
+
+      font-size: 19px;
+      line-height: 1.7;
+
+      color: var(--muted);
+    }
+
+    /* =========================
+       PHẦN 3 Ô CHỨC NĂNG
+    ========================== */
+
+    .main-section {
+      padding: 20px 20px 90px;
+    }
+
+    .container {
+      width: min(1200px, 100%);
+      margin: auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 38px;
+    }
+
+    .section-title h2 {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .card-grid {
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 30px;
+    }
+
+    /* =========================
+       CARD
+    ========================== */
+
+    .card {
+      background: var(--card);
+
+      border-radius: 26px;
+
+      padding: 38px 30px 30px;
+
+      min-height: 430px;
+
+      display: flex;
+      flex-direction: column;
+
+      text-decoration: none;
+
+      color: var(--text);
+
+      box-shadow: var(--shadow);
+
+      border: 1px solid rgba(36, 56, 74, 0.05);
+
+      transition: all 0.28s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+
+      box-shadow:
+        0 22px 50px rgba(36, 56, 74, 0.15);
+    }
+
+    .icon-box {
+      width: 95px;
+      height: 95px;
+
+      margin: 0 auto 28px;
+
+      border-radius: 28px;
+
+      background: #f1ede6;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 52px;
+    }
+
+    .card h3 {
+      text-align: center;
+
+      font-size: 27px;
+      line-height: 1.3;
+
+      margin-bottom: 18px;
+    }
+
+    .card p {
+      text-align: center;
+
+      font-size: 17px;
+      line-height: 1.7;
+
+      color: var(--muted);
+
+      flex: 1;
+    }
+
+    .card-button {
+      margin-top: 28px;
+
+      min-height: 56px;
+
+      border-radius: 999px;
+
+      background: var(--primary);
+
+      color: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-weight: 800;
+
+      font-size: 16px;
+
+      transition: 0.2s;
+    }
+
+    .card:hover .card-button {
+      background: var(--primary-dark);
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer {
+      background: #e9ece8;
+
+      padding: 50px 20px;
+
+      text-align: center;
+    }
+
+    footer h3 {
+      margin-bottom: 8px;
+
+      font-size: 19px;
+    }
+
+    footer p {
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 950px) {
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: auto;
+      }
+
+      .menu {
+        display: none;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .navbar-inner {
+        width: calc(100% - 24px);
+      }
+
+      .hero {
+        padding-top: 60px;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+        letter-spacing: -1px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .section-title h2 {
+        font-size: 29px;
+      }
+
+      .card {
+        padding: 30px 22px 24px;
+      }
+
+      .card h3 {
+        font-size: 24px;
+      }
+
+      .icon-box {
+        width: 82px;
+        height: 82px;
+        font-size: 45px;
+      }
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <!-- =========================
+       THANH MENU
+  ========================== -->
+
+  <header class="navbar">
+
+    <div class="navbar-inner">
+
+      <a href="index.html" class="logo">
+        ĐỊA ĐẠO CỦ CHI
+      </a>
+
+      <nav class="menu">
+
+        <a href="index.html">
+          Trang chủ
+        </a>
+
+        <a href="THÔNG TIN CHI TIẾT.html">
+          Thông tin
+        </a>
+
+        <a href="MÔ HÌNH 3.html">
+          Sơ đồ
+        </a>
+
+        <a href="Cảm nhận mô hình.html">
+          Thử thách
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       PHẦN GIỚI THIỆU
+  ========================== -->
+
+  <section class="hero">
+
+    <div class="hero-label">
+      HỌC LIỆU SỐ TƯƠNG TÁC
+    </div>
+
+    <h1>
+      KHO HỌC THUẬT SỐ<br>
+      ĐỊA ĐẠO CỦ CHI
+    </h1>
+
+    <p>
+      Khám phá hệ thống Địa đạo Củ Chi qua không gian học tập số.
+      Hãy lựa chọn một nội dung bên dưới để bắt đầu hành trình tìm hiểu
+      về công trình lịch sử đặc biệt nằm sâu dưới lòng đất.
+    </p>
+
+  </section>
+
+
+  <!-- =========================
+       BA Ô LIÊN KẾT
+  ========================== -->
+
+  <section class="main-section">
+
+    <div class="container">
+
+      <div class="section-title">
+
+        <h2>
+          Bắt đầu hành trình khám phá
+        </h2>
+
+        <p>
+          Chọn một nội dung bên dưới
+        </p>
+
+      </div>
+
+
+      <div class="card-grid">
+
+
+        <!-- =====================
+             Ô 1
+        ====================== -->
+
+        <a
+          href="THÔNG TIN CHI TIẾT.html"
+          class="card"
+        >
+
+          <div class="icon-box">
+            📚
+          </div>
+
+          <h3>
+            Thông tin chi tiết<br>
+            về Địa đạo Củ Chi
+          </h3>
+
+          <p>
+            Tìm hiểu khái quát về Địa đạo Củ Chi
+            và khám phá các công trình dưới lòng đất
+            như Bếp Hoàng Cầm, hầm chỉ huy,
+            hầm sinh hoạt, hầm quân y,
+            kho lương thực – vũ khí,
+            hầm chữ A và hầm hội họp.
+          </p>
+
+          <div class="card-button">
+
+            KHÁM PHÁ THÔNG TIN
+
+          </div>
+
+        </a>
+
+
+
+        <!-- =====================
+             Ô 2
+        ====================== -->
+
+        <a
+          href="MÔ HÌNH 3.html"
+          class="card"
+        >
+
+          <div class="icon-box">
+            🗺️
+          </div>
+
+          <h3>
+            Sơ đồ khám phá<br>
+            Địa đạo
+          </h3>
+
+          <p>
+            Quan sát sơ đồ mô phỏng hệ thống
+            Địa đạo Củ Chi dưới lòng đất.
+            Nhấn vào từng vị trí trên sơ đồ
+            để khám phá chức năng
+            và đặc điểm của từng công trình.
+          </p>
+
+          <div class="card-button">
+
+            MỞ SƠ ĐỒ KHÁM PHÁ
+
+          </div>
+
+        </a>
+
+
+
+        <!-- =====================
+             Ô 3
+        ====================== -->
+
+        <a
+          href="Cảm nhận mô hình.html"
+          class="card"
+        >
+
+          <div class="icon-box">
+            🎯
+          </div>
+
+          <h3>
+            Thử thách sau khi<br>
+            thám phá
+          </h3>
+
+          <p>
+            Hoàn thành các câu hỏi,
+            nhiệm vụ suy luận và thử thách
+            để kiểm tra những kiến thức
+            em đã thu nhận được
+            sau hành trình khám phá Địa đạo Củ Chi.
+          </p>
+
+          <div class="card-button">
+
+            BẮT ĐẦU THỬ THÁCH
+
+          </div>
+
+        </a>
+
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer>
+
+    <h3>
+      KHO HỌC THUẬT SỐ - ĐỊA ĐẠO CỦ CHI
+    </h3>
+
+    <p>
+      Học lịch sử qua không gian và di sản
+    </p>
+
+    <p>
+      Học liệu phục vụ mục đích giáo dục
+    </p>
+
+  </footer>
+
+
+</body>
+</html>
