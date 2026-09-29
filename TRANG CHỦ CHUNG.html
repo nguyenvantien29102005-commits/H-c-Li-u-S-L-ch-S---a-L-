@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cấu tạo của Trái Đất - Vỏ Trái Đất</title>
+
+  <style>
+    /* =========================
+       RESET
+    ========================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      color: white;
+      overflow-x: hidden;
+
+      background:
+        radial-gradient(circle at 15% 15%, rgba(122, 58, 255, 0.22), transparent 24%),
+        radial-gradient(circle at 85% 20%, rgba(0, 190, 255, 0.18), transparent 28%),
+        radial-gradient(circle at 50% 85%, rgba(58, 55, 255, 0.18), transparent 32%),
+        linear-gradient(
+          135deg,
+          #02040c 0%,
+          #060a1b 22%,
+          #0a1030 48%,
+          #10092d 70%,
+          #03040d 100%
+        );
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* =========================
+       NỀN VŨ TRỤ
+    ========================== */
+
+    .space-background {
+      position: fixed;
+      inset: 0;
+      z-index: -10;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .nebula {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.38;
+      animation: nebulaMove 13s ease-in-out infinite alternate;
+    }
+
+    .nebula.one {
+      width: 420px;
+      height: 420px;
+      background: #5227ff;
+      top: -120px;
+      left: -80px;
+    }
+
+    .nebula.two {
+      width: 480px;
+      height: 480px;
+      background: #005dff;
+      right: -180px;
+      top: 18%;
+      animation-delay: -5s;
+    }
+
+    .nebula.three {
+      width: 430px;
+      height: 430px;
+      background: #9c2cff;
+      bottom: -180px;
+      left: 35%;
+      animation-delay: -8s;
+    }
+
+    @keyframes nebulaMove {
+      from {
+        transform: translate3d(-20px, -15px, 0) scale(0.95);
+      }
+      to {
+        transform: translate3d(40px, 30px, 0) scale(1.12);
+      }
+    }
+
+    /* =========================
+       SAO
+    ========================== */
+
+    .stars,
+    .stars2,
+    .stars3 {
+      position: absolute;
+      inset: 0;
+      background-repeat: repeat;
+    }
+
+    .stars {
+      background-image:
+        radial-gradient(circle, white 1px, transparent 1px);
+      background-size: 70px 70px;
+      opacity: 0.4;
+      animation: starMove 60s linear infinite;
+    }
+
+    .stars2 {
+      background-image:
+        radial-gradient(circle, #81d8ff 1.2px, transparent 1.5px);
+      background-size: 110px 110px;
+      background-position: 35px 50px;
+      opacity: 0.35;
+      animation: starMove2 80s linear infinite;
+    }
+
+    .stars3 {
+      background-image:
+        radial-gradient(circle, #d7a8ff 1.6px, transparent 1.8px);
+      background-size: 160px 160px;
+      background-position: 80px 30px;
+      opacity: 0.23;
+    }
+
+    @keyframes starMove {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-300px);
+      }
+    }
+
+    @keyframes starMove2 {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-350px);
+      }
+    }
+
+    /* =========================
+       THIÊN THẠCH
+    ========================== */
+
+    .meteor {
+      position: absolute;
+      width: 140px;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0),
+        rgba(173,218,255,0.9)
+      );
+      transform: rotate(-35deg);
+      opacity: 0;
+      animation: meteorFly 8s linear infinite;
+    }
+
+    .meteor.m1 {
+      top: 12%;
+      left: 75%;
+    }
+
+    .meteor.m2 {
+      top: 45%;
+      left: 92%;
+      animation-delay: 4s;
+      animation-duration: 10s;
+    }
+
+    .meteor.m3 {
+      top: 70%;
+      left: 70%;
+      animation-delay: 7s;
+    }
+
+    @keyframes meteorFly {
+      0% {
+        transform: translate(0, 0) rotate(-35deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      40% {
+        opacity: 0;
+      }
+      100% {
+        transform: translate(-650px, 400px) rotate(-35deg);
+        opacity: 0;
+      }
+    }
+
+    /* =========================
+       PARTICLES
+    ========================== */
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      opacity: 0.45;
+      box-shadow: 0 0 12px currentColor;
+      animation: floatParticle 9s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatParticle {
+      from {
+        transform: translateY(0px) translateX(0px);
+      }
+      to {
+        transform: translateY(-40px) translateX(25px);
+      }
+    }
+
+    /* =========================
+       BỐ CỤC CHUNG
+    ========================== */
+
+    .app {
+      width: min(1400px, 94%);
+      margin: auto;
+      min-height: 100vh;
+      padding: 28px 0 60px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(135deg, rgba(78,124,255,0.8), rgba(173,63,255,0.75));
+      box-shadow:
+        0 0 25px rgba(69,144,255,0.45),
+        inset 0 0 20px rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 24px;
+    }
+
+    .brand-text span {
+      display: block;
+    }
+
+    .brand-small {
+      font-size: 12px;
+      color: #93a8cb;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .brand-main {
+      font-size: 20px;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+
+    .course-badge {
+      padding: 10px 16px;
+      border-radius: 100px;
+      border: 1px solid rgba(151,181,255,0.25);
+      background: rgba(7,13,37,0.5);
+      backdrop-filter: blur(14px);
+      color: #bed0ff;
+      font-size: 13px;
+      letter-spacing: 0.7px;
+      box-shadow: 0 0 25px rgba(91,105,255,0.08);
+    }
+
+    /* =========================
+       TRANG HOME
+    ========================== */
+
+    .page {
+      display: none;
+      animation: fadeUp 0.5s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero {
+      position: relative;
+      min-height: 720px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 40px;
+
+      border-radius: 40px;
+      padding: 60px;
+
+      background:
+        linear-gradient(
+          120deg,
+          rgba(8,15,43,0.88),
+          rgba(11,8,42,0.74)
+        );
+
+      border: 1px solid rgba(112,155,255,0.18);
+
+      box-shadow:
+        0 25px 90px rgba(0,0,0,0.55),
+        inset 0 0 60px rgba(75,93,255,0.04);
+
+      overflow: hidden;
+      backdrop-filter: blur(22px);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      border: 1px solid rgba(120,170,255,0.1);
+      right: -130px;
+      bottom: -150px;
+      box-shadow:
+        0 0 90px rgba(49,110,255,0.14),
+        inset 0 0 70px rgba(105,62,255,0.12);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 15px;
+      border-radius: 30px;
+      font-size: 13px;
+      color: #9ec4ff;
+      background: rgba(69,119,255,0.09);
+      border: 1px solid rgba(104,153,255,0.2);
+      margin-bottom: 25px;
+    }
+
+    .hero h1 {
+      font-size: clamp(46px, 6vw, 88px);
+      line-height: 0.98;
+      max-width: 850px;
+      letter-spacing: -3px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 .gradient-text {
+      display: block;
+      margin-top: 10px;
+      background: linear-gradient(
+        90deg,
+        #75ceff,
+        #9d8aff,
+        #e179ff
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 20px rgba(118,114,255,0.2));
+    }
+
+    .hero p {
+      color: #aebbd3;
+      line-height: 1.8;
+      font-size: 17px;
+      max-width: 680px;
+      margin-bottom: 34px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .main-button {
+      border: 0;
+      color: white;
+      font-weight: 800;
+      font-size: 16px;
+      padding: 17px 28px;
+      border-radius: 16px;
+      cursor: pointer;
+
+      background:
+        linear-gradient(135deg, #236dff, #763dff 55%, #a13cff);
+
+      box-shadow:
+        0 14px 35px rgba(68,83,255,0.34),
+        0 0 40px rgba(134,59,255,0.12);
+
+      transition: 0.28s ease;
+    }
+
+    .main-button:hover {
+      transform: translateY(-4px) scale(1.025);
+      box-shadow:
+        0 18px 42px rgba(57,90,255,0.42),
+        0 0 50px rgba(166,59,255,0.2);
+    }
+
+    .secondary-info {
+      color: #7f91b4;
+      font-size: 13px;
+    }
+
+    /* =========================
+       TRÁI ĐẤT CSS
+    ========================== */
+
+    .planet-zone {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 560px;
+      position: relative;
+    }
+
+    .orbit {
+      width: 510px;
+      height: 510px;
+      border-radius: 50%;
+      border: 1px solid rgba(91,173,255,0.12);
+      position: absolute;
+      animation: spinSlow 23s linear infinite;
+    }
+
+    .orbit.two {
+      width: 420px;
+      height: 260px;
+      transform: rotate(-20deg);
+    }
+
+    .orbit-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #b479ff;
+      box-shadow: 0 0 20px #a75dff;
+      top: 50%;
+      left: -5px;
+    }
+
+    @keyframes spinSlow {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .planet {
+      position: relative;
+      width: 330px;
+      height: 330px;
+      border-radius: 50%;
+      overflow: hidden;
+
+      background:
+        radial-gradient(circle at 34% 30%, #7ce1ff 0%, #146fd8 28%, #083580 55%, #020923 82%);
+
+      box-shadow:
+        inset -55px -35px 85px rgba(0,0,0,0.64),
+        inset 20px 20px 50px rgba(164,238,255,0.2),
+        0 0 30px rgba(52,134,255,0.35),
+        0 0 90px rgba(62,94,255,0.24);
+
+      animation: planetFloat 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes planetFloat {
+      from {
+        transform: translateY(-10px) rotate(-2deg);
+      }
+      to {
+        transform: translateY(10px) rotate(2deg);
+      }
+    }
+
+    .planet::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      box-shadow: inset -50px -10px 55px rgba(0,0,0,0.6);
+      pointer-events: none;
+    }
+
+    .continent {
+      position: absolute;
+      background:
+        linear-gradient(135deg, #46e5ba, #1c9878 70%, #126756);
+      opacity: 0.96;
+      box-shadow:
+        inset -9px -9px 18px rgba(0,0,0,0.25),
+        0 0 10px rgba(70,229,186,0.12);
+    }
+
+    .continent.c1 {
+      width: 110px;
+      height: 68px;
+      top: 72px;
+      left: 55px;
+      border-radius: 60% 40% 55% 45% / 46% 55% 45% 54%;
+      transform: rotate(-18deg);
+    }
+
+    .continent.c2 {
+      width: 75px;
+      height: 125px;
+      top: 128px;
+      left: 121px;
+      border-radius: 45% 55% 70% 30% / 30% 40% 60% 70%;
+      transform: rotate(14deg);
+    }
+
+    .continent.c3 {
+      width: 93px;
+      height: 72px;
+      top: 76px;
+      right: 44px;
+      border-radius: 40% 60% 45% 55% / 50% 40% 60% 50%;
+      transform: rotate(15deg);
+    }
+
+    .continent.c4 {
+      width: 62px;
+      height: 88px;
+      top: 154px;
+      right: 68px;
+      border-radius: 50% 50% 35% 65%;
+      transform: rotate(-13deg);
+    }
+
+    .planet-ring-glow {
+      position: absolute;
+      width: 370px;
+      height: 370px;
+      border-radius: 50%;
+      border: 1px solid rgba(116,196,255,0.16);
+      box-shadow:
+        inset 0 0 30px rgba(71,148,255,0.06),
+        0 0 50px rgba(85,108,255,0.12);
+    }
+
+    .floating-badge {
+      position: absolute;
+      border: 1px solid rgba(116,144,255,0.25);
+      background: rgba(5,10,28,0.75);
+      backdrop-filter: blur(15px);
+      padding: 11px 15px;
+      border-radius: 14px;
+      font-size: 12px;
+      color: #bed8ff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .badge1 {
+      top: 90px;
+      right: 25px;
+    }
+
+    .badge2 {
+      bottom: 100px;
+      left: 5px;
+    }
+
+    /* =========================
+       TRANG 5 CHỦ ĐỀ
+    ========================== */
+
+    .section-header {
+      text-align: center;
+      margin: 50px 0 38px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(35px, 5vw, 58px);
+      margin-bottom: 13px;
+      background:
+        linear-gradient(90deg, #fff, #9ecaff, #c688ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .section-header p {
+      max-width: 750px;
+      margin: auto;
+      color: #8fa3c5;
+      line-height: 1.8;
+    }
+
+    .back-button {
+      border: 1px solid rgba(137,164,255,0.25);
+      background: rgba(7,13,36,0.7);
+      color: #c9d7f5;
+      padding: 11px 18px;
+      border-radius: 13px;
+      cursor: pointer;
+      transition: 0.25s;
+      margin-bottom: 12px;
+      backdrop-filter: blur(12px);
+    }
+
+    .back-button:hover {
+      background: rgba(49,67,127,0.5);
+      transform: translateX(-3px);
+    }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 22px;
+      padding-bottom: 60px;
+    }
+
+    .topic-card {
+      position: relative;
+      min-height: 315px;
+      border-radius: 27px;
+      padding: 28px;
+      overflow: hidden;
+      cursor: pointer;
+
+      border: 1px solid rgba(116,154,255,0.18);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(14,22,58,0.87),
+          rgba(10,8,37,0.88)
+        );
+
+      box-shadow:
+        0 20px 50px rgba(0,0,0,0.3),
+        inset 0 0 40px rgba(73,88,255,0.03);
+
+      transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+    }
+
+    .topic-card:nth-child(1),
+    .topic-card:nth-child(2),
+    .topic-card:nth-child(3) {
+      grid-column: span 2;
+    }
+
+    .topic-card:nth-child(4) {
+      grid-column: 2 / span 2;
+    }
+
+    .topic-card:nth-child(5) {
+      grid-column: 4 / span 2;
+    }
+
+    .topic-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(118,165,255,0.55);
+
+      box-shadow:
+        0 25px 65px rgba(0,0,0,0.42),
+        0 0 40px rgba(83,73,255,0.12);
+    }
+
+    .topic-card::before {
+      content: "";
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      right: -60px;
+      top: -60px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(79,126,255,0.35), transparent 70%);
+    }
+
+    .topic-number {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      font-weight: 900;
+      color: #dfeaff;
+      background:
+        linear-gradient(135deg, rgba(48,105,255,0.45), rgba(145,55,255,0.35));
+      border: 1px solid rgba(130,166,255,0.2);
+      margin-bottom: 25px;
+    }
+
+    .topic-icon {
+      font-size: 41px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 15px rgba(98,144,255,0.25));
+    }
+
+    .topic-card h3 {
+      font-size: 21px;
+      line-height: 1.35;
+      margin-bottom: 13px;
+    }
+
+    .topic-card p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #8294b4;
+    }
+
+    .topic-arrow {
+      position: absolute;
+      right: 24px;
+      bottom: 20px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(134,163,255,0.2);
+      color: #8db4ff;
+      background: rgba(45,67,135,0.13);
+      transition: 0.3s;
+    }
+
+    .topic-card:hover .topic-arrow {
+      background: #526cff;
+      color: white;
+      transform: rotate(-35deg);
+    }
+
+    /* =========================
+       TRANG 3 MỤC CON
+    ========================== */
+
+    .subpage-wrap {
+      max-width: 1120px;
+      margin: auto;
+    }
+
+    .selected-topic-box {
+      margin: 26px 0 35px;
+      padding: 30px 35px;
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(13,27,71,0.8),
+          rgba(26,12,72,0.72)
+        );
+
+      border: 1px solid rgba(109,148,255,0.22);
+      box-shadow:
+        inset 0 0 30px rgba(71,105,255,0.05),
+        0 15px 50px rgba(0,0,0,0.25);
+    }
+
+    .selected-topic-box .mini-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #7dbbff;
+      margin-bottom: 8px;
+    }
+
+    .selected-topic-box h2 {
+      font-size: clamp(27px, 4vw, 44px);
+      line-height: 1.2;
+    }
+
+    .submenu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .submenu-card {
+      position: relative;
+      min-height: 270px;
+      border-radius: 26px;
+      padding: 30px;
+      cursor: pointer;
+
+      border: 1px solid rgba(125,155,255,0.18);
+
+      background:
+        linear-gradient(
+          150deg,
+          rgba(13,22,52,0.9),
+          rgba(14,10,44,0.9)
+        );
+
+      box-shadow:
+        0 18px 45px rgba(0,0,0,0.32);
+
+      overflow: hidden;
+      transition: 0.3s ease;
+    }
+
+    .submenu-card:hover {
+      transform: translateY(-9px) scale(1.015);
+      border-color: rgba(122,167,255,0.5);
+    }
+
+    .submenu-card::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -90px;
+      bottom: -90px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(79,92,255,0.28),
+        transparent 70%
+      );
+    }
+
+    .submenu-icon {
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      font-size: 31px;
+      border-radius: 19px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(62,126,255,0.36),
+          rgba(142,59,255,0.25)
+        );
+      border: 1px solid rgba(133,168,255,0.23);
+      margin-bottom: 27px;
+    }
+
+    .submenu-card span {
+      font-size: 12px;
+      color: #769ad9;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .submenu-card h3 {
+      font-size: 22px;
+      line-height: 1.4;
+      margin-top: 7px;
+      max-width: 250px;
+    }
+
+    .submenu-note {
+      position: absolute;
+      left: 30px;
+      bottom: 25px;
+      color: #677a9f;
+      font-size: 12px;
+    }
+
+    /* =========================
+       MÀN HÌNH TRỐNG
+       SAU KHI BẤM 3 MỤC CON
+    ========================== */
+
+    .blank-screen {
+      min-height: 600px;
+      display: grid;
+      place-items: center;
+    }
+
+    .blank-content {
+      text-align: center;
+    }
+
+    .blank-symbol {
+      width: 100px;
+      height: 100px;
+      margin: auto;
+      border-radius: 50%;
+      border: 1px solid rgba(110,153,255,0.16);
+      display: grid;
+      place-items: center;
+      font-size: 38px;
+      color: #669cff;
+      background:
+        radial-gradient(circle, rgba(62,98,255,0.14), transparent 68%);
+      animation: blankPulse 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes blankPulse {
+      from {
+        box-shadow: 0 0 0 rgba(72,105,255,0);
+      }
+      to {
+        box-shadow: 0 0 40px rgba(72,105,255,0.2);
+      }
+    }
+
+    /* 
+       Nếu bạn muốn màn hình SAU KHI BẤM hoàn toàn không hiện chữ gì,
+       code JS phía dưới đã để trống nội dung.
+    */
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    .footer {
+      text-align: center;
+      color: #556887;
+      font-size: 12px;
+      padding-top: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 1050px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 45px;
+        min-height: auto;
+      }
+
+      .planet-zone {
+        min-height: 460px;
+      }
+
+      .topic-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .topic-card,
+      .topic-card:nth-child(1),
+      .topic-card:nth-child(2),
+      .topic-card:nth-child(3),
+      .topic-card:nth-child(4),
+      .topic-card:nth-child(5) {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 790px) {
+      .app {
+        width: 92%;
+      }
+
+      .hero {
+        padding: 32px 24px;
+        border-radius: 28px;
+      }
+
+      .hero h1 {
+        letter-spacing: -1.7px;
+      }
+
+      .planet {
+        width: 265px;
+        height: 265px;
+      }
+
+      .planet-ring-glow {
+        width: 300px;
+        height: 300px;
+      }
+
+      .orbit {
+        width: 390px;
+        height: 390px;
+      }
+
+      .submenu-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .topic-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 44px;
+      }
+
+      .planet-zone {
+        min-height: 400px;
+      }
+
+      .planet {
+        width: 230px;
+        height: 230px;
+      }
+
+      .planet-ring-glow {
+        width: 260px;
+        height: 260px;
+      }
+
+      .orbit {
+        width: 320px;
+        height: 320px;
+      }
+
+      .floating-badge {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       NỀN VŨ TRỤ
+  ========================== -->
+  <div class="space-background">
+    <div class="nebula one"></div>
+    <div class="nebula two"></div>
+    <div class="nebula three"></div>
+
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+
+    <div class="meteor m1"></div>
+    <div class="meteor m2"></div>
+    <div class="meteor m3"></div>
+  </div>
+
+  <main class="app">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon">🌍</div>
+
+        <div class="brand-text">
+          <span class="brand-small">Học liệu số</span>
+          <span class="brand-main">Lịch sử & Địa lí 6</span>
+        </div>
+      </div>
+
+      <div class="course-badge">
+        KHÁM PHÁ TRÁI ĐẤT • GEOGRAPHY 6
+      </div>
+    </header>
+
+
+    <!-- =================================================
+         PAGE 1: TRANG CHỦ
+    ================================================== -->
+
+    <section id="homePage" class="page active">
+
+      <div class="hero">
+
+        <div class="hero-content">
+          <div class="eyebrow">
+            ✦ HÀNH TRÌNH KHÁM PHÁ HÀNH TINH XANH
+          </div>
+
+          <h1>
+            CẤU TẠO CỦA
+            <span class="gradient-text">TRÁI ĐẤT</span>
+            VỎ TRÁI ĐẤT
+          </h1>
+
+          <p>
+            Học liệu số Địa lí 6 giúp học sinh khám phá cấu tạo bên trong
+            Trái Đất, các mảng kiến tạo, quá trình nội sinh – ngoại sinh,
+            núi lửa, động đất, địa hình và khoáng sản thông qua hệ thống
+            chuyên đề trực quan và hiện đại.
+          </p>
+
+          <div class="hero-actions">
+            <button class="main-button" onclick="openTopics()">
+              KHÁM PHÁ NGAY &nbsp; →
+            </button>
+
+            <div class="secondary-info">
+              5 chuyên đề • 15 khu vực học tập
+            </div>
+          </div>
+        </div>
+
+
+        <div class="planet-zone">
+
+          <div class="orbit">
+            <div class="orbit-dot"></div>
+          </div>
+
+          <div class="planet-ring-glow"></div>
+
+          <div class="planet">
+            <div class="continent c1"></div>
+            <div class="continent c2"></div>
+            <div class="continent c3"></div>
+            <div class="continent c4"></div>
+          </div>
+
+          <div class="floating-badge badge1">
+            ◉ CẤU TẠO TRÁI ĐẤT
+          </div>
+
+          <div class="floating-badge badge2">
+            ✦ MẢNG KIẾN TẠO
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         PAGE 2: 5 CHỦ ĐỀ
+    ================================================== -->
+
+    <section id="topicsPage" class="page">
+
+      <button class="back-button" onclick="goHome()">
+        ← Trang chủ
+      </button>
+
+      <div class="section-header">
+        <div class="eyebrow">
+          ✦ CHỌN CHUYÊN ĐỀ KHÁM PHÁ
+        </div>
+
+        <h2>
+          VỎ TRÁI ĐẤT & CÁC QUÁ TRÌNH ĐỊA LÍ
+        </h2>
+
+        <p>
+          Chọn một chuyên đề để tiếp tục truy cập các khu vực học tập:
+          thông tin lý thuyết, mô hình 3D và hoạt động tương tác.
+        </p>
+      </div>
+
+
+      <div class="topic-grid">
+
+        <!-- Ô 1 -->
+        <div
+          class="topic-card"
+          onclick="openSubMenu(
+            'Cấu tạo của Trái Đất',
+            '🌍'
+          )"
+        >
+          <div class="topic-number">01</div>
+
+          <div class="topic-icon">🌍</div>
+
+          <h3>
+            CẤU TẠO CỦA TRÁI ĐẤT
+          </h3>
+
+          <p>
+            Khám phá các lớp cấu tạo bên trong hành tinh:
+            vỏ Trái Đất, manti và nhân Trái Đất.
+          </p>
+
+          <div class="topic-arrow">→</div>
+        </div>
+
+
+        <!-- Ô 2 -->
+        <div
+          class="topic-card"
+          onclick="openSubMenu(
+            'Các mảng kiến tạo',
+            '🧩'
+          )"
+        >
+          <div class="topic-number">02</div>
+
+          <div class="topic-icon">🧩</div>
+
+          <h3>
+            CÁC MẢNG KIẾN TẠO
+          </h3>
+
+          <p>
+            Khám phá các mảng kiến tạo lớn và sự dịch chuyển
+            của các mảng trên bề mặt Trái Đất.
+          </p>
+
+          <div class="topic-arrow">→</div>
+        </div>
+
+
+        <!-- Ô 3 -->
+        <div
+          class="topic-card"
+          onclick="openSubMenu(
+            'Quá trình nội sinh và ngoại sinh – Hiện tượng tạo núi',
+            '⛰️'
+          )"
+        >
+          <div class="topic-number">03</div>
+
+          <div class="topic-icon">⛰️</div>
+
+          <h3>
+            QUÁ TRÌNH NỘI SINH VÀ NGOẠI SINH
+          </h3>
+
+          <p>
+            Tìm hiểu những lực làm biến đổi địa hình
+            và quá trình hình thành các dãy núi.
+          </p>
+
+          <div class="topic-arrow">→</div>
+        </div>
+
+
+        <!-- Ô 4 -->
+        <div
+          class="topic-card"
+          onclick="openSubMenu(
+            'Núi lửa và động đất',
+            '🌋'
+          )"
+        >
+          <div class="topic-number">04</div>
+
+          <div class="topic-icon">🌋</div>
+
+          <h3>
+            NÚI LỬA VÀ ĐỘNG ĐẤT
+          </h3>
+
+          <p>
+            Khám phá nguyên nhân, biểu hiện và tác động
+            của núi lửa và động đất.
+          </p>
+
+          <div class="topic-arrow">→</div>
+        </div>
+
+
+        <!-- Ô 5 -->
+        <div
+          class="topic-card"
+          onclick="openSubMenu(
+            'Các dạng địa hình chính trên Trái Đất – Khoáng sản',
+            '💎'
+          )"
+        >
+          <div class="topic-number">05</div>
+
+          <div class="topic-icon">💎</div>
+
+          <h3>
+            ĐỊA HÌNH & KHOÁNG SẢN
+          </h3>
+
+          <p>
+            Tìm hiểu núi, cao nguyên, đồng bằng, đồi
+            cùng các loại khoáng sản quan trọng.
+          </p>
+
+          <div class="topic-arrow">→</div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         PAGE 3: MENU 3 MỤC CON
+    ================================================== -->
+
+    <section id="submenuPage" class="page">
+
+      <div class="subpage-wrap">
+
+        <button class="back-button" onclick="backToTopics()">
+          ← Danh sách chuyên đề
+        </button>
+
+        <div class="selected-topic-box">
+          <div class="mini-title">
+            Chuyên đề đang chọn
+          </div>
+
+          <h2 id="selectedTopicTitle">
+            Cấu tạo của Trái Đất
+          </h2>
+        </div>
+
+
+        <div class="submenu-grid">
+
+          <!-- THÔNG TIN LÝ THUYẾT -->
+          <div
+            class="submenu-card"
+            onclick="openBlankPage('theory')"
+          >
+            <div class="submenu-icon">📚</div>
+
+            <span>Khu vực 01</span>
+
+            <h3>
+              THÔNG TIN LÝ THUYẾT
+            </h3>
+
+            <div class="submenu-note">
+              Nhấn để mở →
+            </div>
+          </div>
+
+
+          <!-- MÔ HÌNH 3D -->
+          <div
+            class="submenu-card"
+            onclick="openBlankPage('3d')"
+          >
+            <div class="submenu-icon">🧊</div>
+
+            <span>Khu vực 02</span>
+
+            <h3>
+              MÔ HÌNH 3D
+            </h3>
+
+            <div class="submenu-note">
+              Nhấn để mở →
+            </div>
+          </div>
+
+
+          <!-- CÂU HỎI -->
+          <div
+            class="submenu-card"
+            onclick="openBlankPage('practice')"
+          >
+            <div class="submenu-icon">🎮</div>
+
+            <span>Khu vực 03</span>
+
+            <h3>
+              CÂU HỎI TƯƠNG TÁC
+              & BÀI TẬP VẬN DỤNG
+            </h3>
+
+            <div class="submenu-note">
+              Nhấn để mở →
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         PAGE 4: TRANG TRỐNG
+         Bấm mục nhỏ sẽ vào đây.
+         Không hiện nội dung.
+    ================================================== -->
+
+    <section id="blankPage" class="page">
+
+      <button class="back-button" onclick="backToSubMenu()">
+        ← Quay lại
+      </button>
+
+      <div class="blank-screen">
+
+        <!--
+          CỐ Ý ĐỂ TRỐNG.
+
+          Sau này bạn có thể xóa blankPage
+          và liên kết trực tiếp sang:
+          
+          ly-thuyet.html
+          mo-hinh-3d.html
+          bai-tap.html
+        -->
+
+      </div>
+
+    </section>
+
+
+    <footer class="footer">
+      HỌC LIỆU SỐ • LỊCH SỬ & ĐỊA LÍ 6 • KHÁM PHÁ TRÁI ĐẤT
+    </footer>
+
+  </main>
+
+
+  <script>
+
+    /* =========================
+       BIẾN LƯU TRỮ
+    ========================== */
+
+    let currentTopic = "";
+    let currentIcon = "";
+
+
+    /* =========================
+       HIỆN TRANG
+    ========================== */
+
+    function showPage(pageId) {
+
+      const pages = document.querySelectorAll(".page");
+
+      pages.forEach(page => {
+        page.classList.remove("active");
+      });
+
+      document
+        .getElementById(pageId)
+        .classList.add("active");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+
+    /* =========================
+       TỪ HOME → 5 CHỦ ĐỀ
+    ========================== */
+
+    function openTopics() {
+      showPage("topicsPage");
+    }
+
+
+    /* =========================
+       5 CHỦ ĐỀ → 3 MENU CON
+    ========================== */
+
+    function openSubMenu(topicName, icon) {
+
+      currentTopic = topicName;
+      currentIcon = icon;
+
+      document.getElementById(
+        "selectedTopicTitle"
+      ).innerHTML = icon + " " + topicName;
+
+      showPage("submenuPage");
+    }
+
+
+    /* =========================
+       MENU CON → TRANG TRỐNG
+    ========================== */
+
+    function openBlankPage(type) {
+
+      /*
+        HIỆN TẠI:
+        Chỉ chuyển sang một trang trống,
+        đúng yêu cầu chưa hiện thông tin.
+
+        SAU NÀY:
+        Bạn có thể thay phần này bằng
+        window.location.href.
+      */
+
+      showPage("blankPage");
+
+
+      /*
+      ============================================
+      VÍ DỤ LIÊN KẾT TRANG RIÊNG SAU NÀY
+      ============================================
+
+      if(type === "theory") {
+          window.location.href =
+          "ly-thuyet.html";
+      }
+
+      if(type === "3d") {
+          window.location.href =
+          "mo-hinh-3d.html";
+      }
+
+      if(type === "practice") {
+          window.location.href =
+          "bai-tap.html";
+      }
+
+      */
+    }
+
+
+    /* =========================
+       QUAY LẠI
+    ========================== */
+
+    function goHome() {
+      showPage("homePage");
+    }
+
+    function backToTopics() {
+      showPage("topicsPage");
+    }
+
+    function backToSubMenu() {
+      showPage("submenuPage");
+    }
+
+
+    /* =========================
+       TẠO HẠT SÁNG
+    ========================== */
+
+    const background =
+      document.querySelector(".space-background");
+
+    for(let i = 0; i < 35; i++) {
+
+      const p =
+        document.createElement("div");
+
+      p.className = "particle";
+
+      const size =
+        Math.random() * 3 + 1;
+
+      p.style.width = size + "px";
+      p.style.height = size + "px";
+
+      p.style.left =
+        Math.random() * 100 + "%";
+
+      p.style.top =
+        Math.random() * 100 + "%";
+
+      p.style.animationDelay =
+        Math.random() * 8 + "s";
+
+      p.style.animationDuration =
+        (6 + Math.random() * 8) + "s";
+
+      background.appendChild(p);
+    }
+
+  </script>
+
+</body>
+</html>
